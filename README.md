@@ -1,2 +1,1 @@
-# dap_mrs
-Deferred Acceptance with Marginal Rate of Substitution
+# Deferred Acceptance Procedure with Marginal Rate of Substitution
