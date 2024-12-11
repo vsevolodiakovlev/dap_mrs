@@ -67,12 +67,12 @@ def two_features(data_input='example_data',
     # default dataset
     if data_input == 'example_data':
         np.random.seed(0)
-        data_input = pd.DataFrame({'A_char_1': np.random.randint(1, 100, 100),
-                                'A_char_2': np.random.randint(1, 5, 100),
-                                'A_mrs': [5.25] * 100,
-                                'B_char_1': np.random.randint(1, 100, 100),
-                                'B_char_2': np.random.randint(1, 5, 100),
-                                'B_mrs': [7.75] * 100})
+        data_input = pd.DataFrame({'A_char_1': np.random.normal(1, 100, 200),
+                                'A_char_2': np.random.normal(1, 5, 200),
+                                'A_mrs': [5.25] * 200,
+                                'B_char_1': np.random.normal(1, 100, 200),
+                                'B_char_2': np.random.normal(1, 5, 200),
+                                'B_mrs': [7.75] * 200})
         
     # All reviewers are unmatched indicator
     all_matched = False
