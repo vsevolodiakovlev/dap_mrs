@@ -2,6 +2,8 @@
 
 [Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [Example](#other-examples) | [Codebook](#codebook) | [References](#references)
 
+![figure](./figures/dap_mrs_preview.png)
+
 This module is a python implementation of the *Deferred Acceptance Procedure (DAP)* developed by Gale and Shapley (1962). The algorithm computes an applicant-optimal assignment based on the data for the agents' characteristics and the *marginal rate of substitution (MRS)* between the characteristics of their counterparts.
 
 ## The algorithm
