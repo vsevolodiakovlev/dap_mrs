@@ -56,9 +56,11 @@ data_output, log = dap_mrs.two_features()
 This produces 2 data frames and 2 graphs:
  - **data_output** — the original data file with the matching results added as new columns
  - **log** — additional file containing information about each iteration of the algorithm
- - **acailablem_payoffs**
-![figure](./figures/available_payoffs.pdf)
-- ** **
+ - **acailablem_payoffs** - 
+ - **obs_vs_dap** -
+
+
+![figure](./figures/available_payoffs.png) | ![figure](./figures/obs_vs_dap.png)
 
 ## Example
 
