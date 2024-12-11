@@ -54,7 +54,7 @@ data_output, log = dap_mrs.two_features()
 
 
 This produces 2 data frames and 2 graphs:
- - **data_output** — the original data file with the matching results added as new columns
+ - **data_output** — modified input data file with the matching results added as new columns
  - **log** — additional file containing information about each iteration of the algorithm
  - **available_payoffs** - available payoffs for applicants and reviewers
  - **obs_vs_dap** - difference between the payoffs of the applicants in the observed (original) and the A-Optimal (dap-computed) allocations
