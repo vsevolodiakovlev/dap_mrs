@@ -59,7 +59,7 @@ This produces 2 data frames and 2 graphs:
  - **available_payoffs** - available payoffs for applicants and reviewers
  - **obs_vs_dap** - difference between the payoffs of the applicants in the observed (original) and the A-Optimal (dap-computed) allocations
 
-<img src="./figures/available_payoffs.png" width="500"> <img src="./figures/obs_vs_dap.png" width="500">
+<img src="./figures/available_payoffs.png" width="400"> <img src="./figures/obs_vs_dap.png" width="400">
 
 ## References
 
