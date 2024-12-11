@@ -61,7 +61,7 @@ def two_features(data_input='example_data',
                     B_mrs_name = 'B_mrs',
                     A_name='A',
                     B_name='B',
-                    files_name='dap_mrs_two_features')
+                    files_name='dap_mrs_two_features'):
     """
     
     # default dataset
