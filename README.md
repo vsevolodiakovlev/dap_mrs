@@ -36,11 +36,29 @@ import dap_mrs
 6. Specify the input parameters
 7. Run the algorithm
 ```python
+data_output, log = dap_mrs.two_features(data_input=my_dataframe, 
+                                        A_char_1_name = 'A_char_1',
+                                        A_char_2_name = 'A_char_2',
+                                        A_mrs_name = 'A_mrs',
+                                        B_char_1_name = 'B_char_1',
+                                        B_char_2_name = 'B_char_2',
+                                        B_mrs_name = 'B_mrs',
+                                        A_name='A',
+                                        B_name='B',
+                                        files_name='dap_mrs_two_features')
+```
+If no input parameters are specified, the function runs the algorithm on simulated data:
+```python
 data_output, log = dap_mrs.two_features()
 ```
-This produces 2 dataframes and 2 graphs:
- - **data_output** — ...
- - **log** — additional file containing matching outcomes for each iteration of the matching procedure for the last repetition illustrating the algorithm
+
+
+This produces 2 data frames and 2 graphs:
+ - **data_output** — the original data file with the matching results added as new columns
+ - **log** — additional file containing information about each iteration of the algorithm
+ - **acailablem_payoffs**
+![figure](./figures/available_payoffs.pdf)
+- ** **
 
 ## Example
 
