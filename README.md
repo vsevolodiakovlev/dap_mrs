@@ -59,8 +59,7 @@ This produces 2 data frames and 2 graphs:
  - **acailablem_payoffs** - 
  - **obs_vs_dap** -
 
-
-![figure](./figures/available_payoffs.png) | ![figure](./figures/obs_vs_dap.png)
+<img src="./figures/available_payoffs.png" width="500"> <img src="./figures/obs_vs_dap.png" width="500">
 
 ## Example
 
