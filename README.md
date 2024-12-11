@@ -1,6 +1,6 @@
 # Deferred Acceptance with Marginal Rate of Substitution
 
-[Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [Example](#other-examples) | [Codebook](#codebook) | [References](#references)
+[Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [References](#references)
 
 ![figure](./figures/dap_mrs_preview.png)
 
@@ -23,7 +23,7 @@ An assignment is called **A-Optimal** if all applicants are at least as well off
 
 An assignment is called **stable** if there are no two pairs of matched agents who would prefer to switch with each other.
 
-## Usage
+## To use the module
 
 1. Create a new directory with the input data make it your working directory
 2. Clone the repository to that directory
