@@ -67,27 +67,27 @@ This produces 2 data frames and 2 graphs:
 
 | **Variable Name**         | **Description**                                                                                     | **Source Components**                     |
 |----------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
-| `initial_index`           | The original index of A and B in the input dataset `data_input`.                                             | `data_input.index`                        |
-| `A_observed_utility`      | Observed utility for A, calculated as `B['char_1']` + `B['char_2']` * `A['mrs']`. | `B['char_1']`, `B['char_2']`, `A['mrs']` |
-| `A_dap_match`             | The index of B matched with A as the result of the DAP.                                                                 | `A['match']`                              |
-| `A_dap_utility`           | The payoff for A from matching with B.                                               | `A['match_utility']`                      |
-| `B_observed_utility`      | Observed utility for B, calculated as `A['char_1']` + `A['char_2']` * `B['mrs']`. | `A['char_1']`, `A['char_2']`, `B['mrs']` |
-| `B_dap_match`             | The index of A matched with B as the result of the DAP.                                                                 | `B['match']`                              |
-| `B_dap_utility`           | The payoff for B from matching with A.                                               | `B['match_utility']`                      |
-| `A_observed_utility_z`    | Z-score of the observed utility for A, normalized using its mean and standard deviation. | `A_observed_utility`                                      |
-| `B_observed_utility_z`    | Z-score of the observed utility for B, normalized using its mean and standard deviation. | `B_observed_utility`                                      |
-| `A_dap_utility_z`         | Z-score of the DAP-derived utility for A, normalized using its mean and standard deviation.    | `A_dap_utility`                                           |
-| `B_dap_utility_z`         | Z-score of the DAP-derived utility for B, normalized using its mean and standard deviation.    | `B_dap_utility`                                           |
-| `diff_A`                  | The difference between the observed utility and the DAP-derived utility for A.                                 | `A_observed_utility`, `A_dap_utility`                    |
-| `diff_B`                  | The difference between the observed utility and the DAP-derived utility for B.                                 | `B_observed_utility`, `B_dap_utility`                    |
-| `diff_A_z`                | Z-score of `diff_A`, normalized using its mean and standard deviation.                          | `diff_A`                                                 |
-| `diff_B_z`                | Z-score of `diff_B`, normalized using its mean and standard deviation.                          | `diff_B`                                                 |
+| `initial_index`           | The original index of A and B in the input dataset `data_input`                                             | `data_input.index`                        |
+| `A_observed_utility`      | Observed utility for A, calculated as `B['char_1']` + `B['char_2']` * `A['mrs']` | `B['char_1']`, `B['char_2']`, `A['mrs']` |
+| `A_dap_match`             | The index of B matched with A as the result of the DAP                                                                 | `A['match']`                              |
+| `A_dap_utility`           | The payoff for A from matching with B                                               | `A['match_utility']`                      |
+| `B_observed_utility`      | Observed utility for B, calculated as `A['char_1']` + `A['char_2']` * `B['mrs']` | `A['char_1']`, `A['char_2']`, `B['mrs']` |
+| `B_dap_match`             | The index of A matched with B as the result of the DAP                                                                 | `B['match']`                              |
+| `B_dap_utility`           | The payoff for B from matching with A                                              | `B['match_utility']`                      |
+| `A_observed_utility_z`    | Z-score of the observed utility for A, normalized using its mean and standard deviation | `A_observed_utility`                                      |
+| `B_observed_utility_z`    | Z-score of the observed utility for B, normalized using its mean and standard deviation | `B_observed_utility`                                      |
+| `A_dap_utility_z`         | Z-score of the DAP-derived utility for A, normalized using its mean and standard deviation    | `A_dap_utility`                                           |
+| `B_dap_utility_z`         | Z-score of the DAP-derived utility for B, normalized using its mean and standard deviation    | `B_dap_utility`                                           |
+| `diff_A`                  | The difference between the observed utility and the DAP-derived utility for A                                 | `A_observed_utility`, `A_dap_utility`                    |
+| `diff_B`                  | The difference between the observed utility and the DAP-derived utility for B                                 | `B_observed_utility`, `B_dap_utility`                    |
+| `diff_A_z`                | Z-score of `diff_A`, normalized using its mean and standard deviation                          | `diff_A`                                                 |
+| `diff_B_z`                | Z-score of `diff_B`, normalized using its mean and standard deviation                          | `diff_B`                                                 |
 
 ### Log
 
 | **Variable Name**           | **Description**                                                                                                   | **Source Components**               |
 |------------------------------|-------------------------------------------------------------------------------------------------------------------|-------------------------------------|
-| `iterat`                    | The current iteration number.                                                        | itself                            |
+| `iterat`                    | The current iteration number                                                        | itself                            |
 | `A_match_count`             | The total number of matched As | `A['match']` |
 | `A_unmatch_count`           | The total number of unmatched As | `A['match']`           |
 | `B_match_count`             | The total number of matched Bs | `B['match']` |
@@ -96,8 +96,8 @@ This produces 2 data frames and 2 graphs:
 | `B_match_utlity_mean`       | The average payoffs of Bs | `B['match_utility']`         |
 | `breakups_count`            | The total number of breakups recorded during the iteration. | itself                    |
 | `q_reset_count`             | The total number of resets performed on the preference rank during the iteration.                          | itself                     |
-| `rejections_count`          | The total number of rejections recorded during the iteration.                                                  | itself                  |
-| `pass_matched_count`        | The total number of matched As that did not need to apply this iteration. | itself |
+| `rejections_count`          | The total number of rejections recorded during the iteration                                                  | itself                  |
+| `pass_matched_count`        | The total number of matched As that did not need to apply this iteration | itself |
 
 ## References
 
