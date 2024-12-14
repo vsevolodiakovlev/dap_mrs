@@ -63,6 +63,8 @@ This produces 2 data frames and 2 graphs:
 
 ## Codebook
 
+### Output data
+
 | **Variable Name**         | **Description**                                                                                     | **Source Components**                     |
 |----------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
 | `initial_index`           | The original index of A and B in the input dataset `data_input`.                                             | `data_input.index`                        |
@@ -81,6 +83,21 @@ This produces 2 data frames and 2 graphs:
 | `diff_A_z`                | Z-score of `diff_A`, normalized using its mean and standard deviation.                          | `diff_A`                                                 |
 | `diff_B_z`                | Z-score of `diff_B`, normalized using its mean and standard deviation.                          | `diff_B`                                                 |
 
+### Log
+
+| **Variable Name**           | **Description**                                                                                                   | **Source Components**               |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------|-------------------------------------|
+| `iterat`                    | The current iteration number.                                                        | itself                            |
+| `A_match_count`             | The total number of matched As | `A['match']` |
+| `A_unmatch_count`           | The total number of unmatched As | `A['match']`           |
+| `B_match_count`             | The total number of matched Bs | `B['match']` |
+| `B_unmatch_count`           | The total number of unmatched Bs | `B['match']`           |
+| `A_match_utlity_mean`       | The average payoffs of As | `A['match_utility']`         |
+| `B_match_utlity_mean`       | The average payoffs of Bs | `B['match_utility']`         |
+| `breakups_count`            | The total number of breakups recorded during the iteration. | itself                    |
+| `q_reset_count`             | The total number of resets performed on the preference rank during the iteration.                          | itself                     |
+| `rejections_count`          | The total number of rejections recorded during the iteration.                                                  | itself                  |
+| `pass_matched_count`        | The total number of matched As that did not need to apply this iteration. | itself |
 
 ## References
 
