@@ -94,8 +94,8 @@ This produces 2 data frames and 2 graphs:
 | `B_unmatch_count`           | The total number of unmatched Bs | `B['match']`           |
 | `A_match_utlity_mean`       | The average payoffs of As | `A['match_utility']`         |
 | `B_match_utlity_mean`       | The average payoffs of Bs | `B['match_utility']`         |
-| `breakups_count`            | The total number of breakups recorded during the iteration. | itself                    |
-| `q_reset_count`             | The total number of resets performed on the preference rank during the iteration.                          | itself                     |
+| `breakups_count`            | The total number of breakups recorded during the iteration | itself                    |
+| `q_reset_count`             | The total number of resets performed on the preference rank during the iteration                          | itself                     |
 | `rejections_count`          | The total number of rejections recorded during the iteration                                                  | itself                  |
 | `pass_matched_count`        | The total number of matched As that did not need to apply this iteration | itself |
 
