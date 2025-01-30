@@ -45,7 +45,10 @@ data_output, log = dap_mrs.two_features(data_input=my_dataframe,
                                         B_mrs_name = 'B_mrs',
                                         A_name='A',
                                         B_name='B',
-                                        files_name='dap_mrs_two_features')
+                                        spec_name='dap_mrs_def',
+                                        extra_vars=False,
+                                        graphs=True,
+                                        save_files=True)
 ```
 If no input parameters are specified, the function runs the algorithm on simulated data:
 ```python
