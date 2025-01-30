@@ -1,4 +1,3 @@
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,7 +13,10 @@ def two_features(data_input='example_data',
         B_mrs_name = 'B_mrs',
         A_name='A',
         B_name='B',
-        files_name='dap_mrs_two_features'):
+        spec_name='dap_mrs_def',
+        extra_vars=False,
+        graphs=True,
+        save_files=True):
         
     """
     Perform the Deferred Acceptance Procedure (DAP) based on the data for the agents' characteristics and the marginal rate of substitution (MRS) between the characteristics of their counterparts.
@@ -39,8 +41,17 @@ def two_features(data_input='example_data',
         The label for applicants in the graphs. Default is 'A'.
     B_name : str, optional
         The label for reviewers in the graphs. Default is 'B'.
-    files_name : str, optional
-        The name of the files to save. Default is 'dap_mrs_two_features'.
+    spec_name : str, optional
+        Specification name. Used to name the output files and new variables. Default is 'dap_mrs_def'.
+    extra_vars : bool, optional
+        If True, in addition to the variables containing the payoffs, z-scores, and the difference 
+        between the observed and DAP-generated payoffs and their z-scores, the output file will also 
+        contain applicants' and reviewers' initially assigned indices and the indices of their matches. 
+        Default is False.
+    graphs : bool, optional
+        If True, the output graphs will be displayed. Default is True.
+    save_files : bool, optional
+        If True, the output files will be saved. Default is True.
 
     Returns
     -------
@@ -61,7 +72,10 @@ def two_features(data_input='example_data',
                     B_mrs_name = 'B_mrs',
                     A_name='A',
                     B_name='B',
-                    files_name='dap_mrs_two_features')
+                    spec_name='dap_mrs_def',
+                    extra_vars=False,
+                    graphs=True,
+                    save_files=True)
     """
     
     # default dataset
@@ -141,7 +155,7 @@ def two_features(data_input='example_data',
         for i in A['id']:
             # if i is not matched
             if A['match'].loc[A['id'] == i].values[0] == None:
-                # generate i's netwrok
+                # generate i's network
                 network = {'id': B['id'],
                         'char_1': B['char_1'],
                         'char_2': B['char_2'],
@@ -192,7 +206,7 @@ def two_features(data_input='example_data',
                         B.loc[B['id'] == qth_best_id, 'match_utility'] = i_utility
                     # else if i provides lower utility than the current applicant
                     if i_utility < current_applicant_utility:
-                        # i stays u nmatched and qth best reviewer stays matched with the current applicant
+                        # i stays u nmmatched and qth best reviewer stays matched with the current applicant
                         rejections_count += 1
             # if i is matched
             elif A['match'][A['id'] == i].values[0] != None:
@@ -242,29 +256,31 @@ def two_features(data_input='example_data',
     data_output = data_input.copy()
     
     # update the dataset with the matching results
-    data_output['initial_index'] = data_input.index
-    data_output['A_observed_utility'] = B['char_1'] + (B['char_2'] * A['mrs'])
-    data_output['A_dap_match'] = A['match']
-    data_output['A_dap_utility'] = A['match_utility']
-    data_output['B_observed_utility'] = A['char_1'] + (A['char_2'] * B['mrs'])
-    data_output['B_dap_match'] = B['match']
-    data_output['B_dap_utility'] = B['match_utility']
+    if extra_vars == True:
+        data_output[spec_name + '_initial_index'] = data_input.index
+        data_output[spec_name + '_A_dap_match'] = A['match']
+        data_output[spec_name + '_B_dap_match'] = B['match']
+    
+    data_output[spec_name + '_A_obs_utility'] = B['char_1'] + (B['char_2'] * A['mrs'])
+    data_output[spec_name + '_B_obs_utility'] = A['char_1'] + (A['char_2'] * B['mrs'])
+    data_output[spec_name + '_A_dap_utility'] = A['match_utility']
+    data_output[spec_name + '_B_dap_utility'] = B['match_utility']
 
     # calculate z-scores for observed utilities
-    data_output['A_observed_utility_z'] = (data_output['A_observed_utility'] - data_output['A_observed_utility'].mean())/data_output['A_observed_utility'].std()
-    data_output['B_observed_utility_z'] = (data_output['B_observed_utility'] - data_output['B_observed_utility'].mean())/data_output['B_observed_utility'].std()
+    data_output[spec_name + '_A_obs_utility_z'] = (data_output['A_observed_utility'] - data_output['A_observed_utility'].mean())/data_output['A_observed_utility'].std()
+    data_output[spec_name + '_B_obs_utility_z'] = (data_output['B_observed_utility'] - data_output['B_observed_utility'].mean())/data_output['B_observed_utility'].std()
 
     # calculate z-scores for dap utilities
-    data_output['A_dap_utility_z'] = (data_output['A_dap_utility'] - data_output['A_dap_utility'].mean())/data_output['A_dap_utility'].std()
-    data_output['B_dap_utility_z'] = (data_output['B_dap_utility'] - data_output['B_dap_utility'].mean())/data_output['B_dap_utility'].std()
+    data_output[spec_name + '_A_dap_utility_z'] = (data_output['A_dap_utility'] - data_output['A_dap_utility'].mean())/data_output['A_dap_utility'].std()
+    data_output[spec_name + '_B_dap_utility_z'] = (data_output['B_dap_utility'] - data_output['B_dap_utility'].mean())/data_output['B_dap_utility'].std()
 
     # calculate difference between observed and dap utilities
-    data_output['diff_A'] = data_output['A_observed_utility'] - data_output['A_dap_utility']
-    data_output['diff_B'] = data_output['B_observed_utility'] - data_output['B_dap_utility']
+    data_output[spec_name + '_diff_A'] = data_output['A_observed_utility'] - data_output['A_dap_utility']
+    data_output[spec_name + '_diff_B'] = data_output['B_observed_utility'] - data_output['B_dap_utility']
 
     # calculate z-scores for diff_A and diff_B
-    data_output['diff_A_z'] = (data_output['diff_A'] - data_output['diff_A'].mean())/data_output['diff_A'].std()
-    data_output['diff_B_z'] = (data_output['diff_B'] - data_output['diff_B'].mean())/data_output['diff_B'].std() 
+    data_output[spec_name + '_diff_A_z'] = (data_output['diff_A'] - data_output['diff_A'].mean())/data_output['diff_A'].std()
+    data_output[spec_name + '_diff_B_z'] = (data_output['diff_B'] - data_output['diff_B'].mean())/data_output['diff_B'].std() 
 
     # ---------------------------------------------------------------
     # GRAPH 1: Available payoffs
@@ -306,9 +322,10 @@ def two_features(data_input='example_data',
 
     # export the graph as pdf
     plt.tight_layout()
-    plt.savefig('available_payoffs.pdf')
+    plt.savefig(spec_name + '_available_payoffs.pdf')
 
-    plt.show()
+    if graphs == True:
+        plt.show()
 
     # ---------------------------------------------------------------
     # GRAPH 2: Observed vs. A-Optimal
@@ -362,18 +379,20 @@ def two_features(data_input='example_data',
 
     # export the graph as pdf
     plt.tight_layout()
-    plt.savefig('obs_vs_dap.pdf')
+    plt.savefig(spec_name + '_obs_vs_dap.pdf')
 
-    plt.show()
+    if graphs == True:
+        plt.show()
 
     # ---------------------------------------------------------------
     # SAVE OUTPUT FILES
     # ---------------------------------------------------------------
 
-    data_output.to_csv(files_name + '_data_output.csv', index=False)
-    print()
-    print(files_name + '_data_output.csv is saved to ', os.getcwd())
-    log.to_csv(files_name + '_log.csv', index=False)
-    print(files_name + '_log.csv is saved to ', os.getcwd())
+    if save_files == True:
+        data_output.to_csv(spec_name + '_data_output.csv', index=False)
+        print()
+        print(spec_name + '_data_output.csv is saved to ', os.getcwd())
+        log.to_csv(spec_name + '_log.csv', index=False)
+        print(spec_name + '_log.csv is saved to ', os.getcwd())
     
     return data_output, log
