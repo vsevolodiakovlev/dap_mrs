@@ -8,12 +8,14 @@ the characteristics of their counterparts.
 
 For more information, see https://github.com/vsevolodiakovlev/dap_mrs/blob/main/README.md.
 
-The module is a work in progress. The current version of the algorithm, `two_features`, 
-is implemented for agents characterised by two variables. To learn more about the parameters,
-run `help(dam_mrs.two_features)`.
+The module is a work in progress. The two current versions of the algorithm are `two_features`
+and `four_features`. The former is implemented for agents characterised by two variables, while
+the latter is implemented for agents characterised by four variables. To learn more about the
+parameters, run `help(dam_mrs.two_features)` or `help(dam_mrs.four_features)`. 
 
 author: Vsevolod Iakovlev
 email: vsevolod.v.iakovlev@gmail.com
 """
 
 from .src.main import two_features
+from .src.main import four_features
