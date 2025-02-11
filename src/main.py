@@ -79,7 +79,7 @@ def two_features(data_input='example_data',
     """
     
     # default dataset
-    if data_input == 'example_data':
+    if isinstance(data_input, str) and data_input == 'example_data':
         np.random.seed(0)
         data_input = pd.DataFrame({'A_char_1': np.random.normal(1, 100, 200),
                                 'A_char_2': np.random.normal(1, 5, 200),
@@ -504,7 +504,7 @@ def four_features(data_input='example_data',
     """
     
     # default dataset
-    if data_input == 'example_data':
+    if isinstance(data_input, str) and data_input == 'example_data':
         np.random.seed(0)
         data_input = pd.DataFrame({'A_char_1': np.random.normal(1, 100, 200),
                                 'A_char_2': np.random.normal(1, 5, 200),
