@@ -19,3 +19,4 @@ email: vsevolod.v.iakovlev@gmail.com
 
 from .src.main import two_features
 from .src.main import four_features
+from .src.main import four_features_biased
