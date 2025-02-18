@@ -3,6 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+from ridgeplot import ridgeplot
+import kaleido
+from datetime import datetime
 
 def two_features(data_input='example_data',
         A_char_1_name = 'A_char_1',
@@ -264,11 +267,7 @@ def two_features(data_input='example_data',
     data_output[spec_name + '_A_obs_utility'] = B['char_1'] + (B['char_2'] * A['mrs'])
     data_output[spec_name + '_B_obs_utility'] = A['char_1'] + (A['char_2'] * B['mrs'])
     data_output[spec_name + '_A_dap_utility'] = A['match_utility']
-        
-    B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
-    print('Sorted correctly:', B_dap_sorted.index.equals(A.index))
-
-    data_output[spec_name + '_B_dap_utility'] = B_dap_sorted['match_utility']
+    data_output[spec_name + '_B_dap_utility'] = B['match_utility']
 
     # calculate z-scores for observed utilities
     data_output[spec_name + '_A_obs_utility_z'] = (data_output[spec_name + '_A_obs_utility'] - data_output[spec_name + '_A_obs_utility'].mean())/data_output[spec_name + '_A_obs_utility'].std()
@@ -724,11 +723,7 @@ def four_features(data_input='example_data',
     data_output[spec_name + '_A_obs_utility'] = B['char_1'] + B['char_2'] * A['mrs12'] + B['char_3'] * A['mrs13'] + B['char_4'] * A['mrs14']
     data_output[spec_name + '_B_obs_utility'] = A['char_1'] + A['char_2'] * B['mrs12'] + A['char_3'] * B['mrs13'] + A['char_4'] * B['mrs14']
     data_output[spec_name + '_A_dap_utility'] = A['match_utility']
-        
-    B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
-    print('Sorted correctly:', B_dap_sorted.index.equals(A.index))
-
-    data_output[spec_name + '_B_dap_utility'] = B_dap_sorted['match_utility']
+    data_output[spec_name + '_B_dap_utility'] = B['match_utility']
 
     # calculate z-scores for observed utilities
     data_output[spec_name + '_A_obs_utility_z'] = (data_output[spec_name + '_A_obs_utility'] - data_output[spec_name + '_A_obs_utility'].mean())/data_output[spec_name + '_A_obs_utility'].std()
@@ -861,7 +856,10 @@ def four_features(data_input='example_data',
     
     return data_output, log
 
-def four_features_biased(data_input='example_data',
+def rematcher(data_input='example_data',
+        A_char_number = 4,
+        B_char_number = 4,
+        bias = False,
         A_char_1_name = 'A_char_1',
         A_char_2_name = 'A_char_2',
         A_char_3_name = 'A_char_3',
@@ -878,8 +876,8 @@ def four_features_biased(data_input='example_data',
         B_mrs13_name = 'B_mrs13',
         B_mrs14_name = 'B_mrs14',
         B_bias_mrs_name = 'B_bias_mrs',
-        A_name='A',
-        B_name='B',
+        A_name='Applicants',
+        B_name='Reviewers',
         spec_name='default',
         extra_vars=False,
         graphs=True,
@@ -895,6 +893,12 @@ def four_features_biased(data_input='example_data',
     ----------
     data_input : str or pd.DataFrame, optional
         The dataset to use for the matching process. If 'example_data', a default dataset will be generated. Default is 'example_data'.
+    A_char_number : int, optional
+        The number of applicants' characteristics. Default is 4.
+    B_char_number : int, optional
+        The number of reviewers' characteristics. Default is 4.
+    bias : bool, optional
+        If True, the reviewers' bias will be included in the matching process. Default is False.
     A_char_1_name : str, optional
         The name of the first characteristic of applicants. Default is 'A_char_1'.
     A_char_2_name : str, optional
@@ -904,7 +908,7 @@ def four_features_biased(data_input='example_data',
     A_char_4_name : str, optional
         The name of the fourth characteristic of applicants. Default is 'A_char_4'.
     A_bias_char_name : str, optional
-        The name of the applicants' characteristic that the reviewers have a bias towards. Default is 'A_bias_char'.
+        The name of the applicants' binary characteristic that the reviewers have a bias towards. Default is 'A_bias_char'.
     A_mrs12_name : str, optional
         The name of the applicants' marginal rate of substitution between the reviewers' first and second characteristics. Default is 'A_mrs12'.
     A_mrs13_name : str, optional
@@ -928,9 +932,9 @@ def four_features_biased(data_input='example_data',
     B_bias_mrs_name : str, optional
         The name of the reviewers' bias rate towards the applicants' bias characteristic. Default is 'B_bias_mrs'.
     A_name : str, optional
-        The label for applicants in the graphs. Default is 'A'.
+        The label for applicants in the graphs. Default is 'Applicants'.
     B_name : str, optional
-        The label for reviewers in the graphs. Default is 'B'.
+        The label for reviewers in the graphs. Default is 'Reviewers'.
     spec_name : str, optional
         Specification name. Used to name the output files and new variables. Default is 'default'.
     extra_vars : bool, optional
@@ -953,35 +957,40 @@ def four_features_biased(data_input='example_data',
     Examples
     --------
     >>> four_features_biased()
-    >>> four_features_biased(data_input=my_dataframe, 
-                    A_char_1_name = 'A_char_1',
-                    A_char_2_name = 'A_char_2',
-                    A_char_3_name = 'A_char_3',
-                    A_char_4_name = 'A_char_4',
-                    A_mrs12_name = 'A_mrs12',
-                    A_mrs13_name = 'A_mrs13',
-                    A_mrs14_name = 'A_mrs14',
-                    A_bias_char_name = 'A_bias_char',
-                    B_char_1_name = 'B_char_1',
-                    B_char_2_name = 'B_char_2',
-                    B_char_3_name = 'B_char_3',
-                    B_char_4_name = 'B_char_4',
-                    B_mrs12_name = 'B_mrs12',
-                    B_mrs13_name = 'B_mrs13',
-                    B_mrs14_name = 'B_mrs14',
-                    B_bias_mrs_name = 'B_bias_mrs',
-                    A_name='A',
-                    B_name='B',
-                    spec_name='default',
-                    extra_vars=False,
-                    graphs=True,
-                    save_files=True)
+    >>> four_features_biased(data_input = my_dataframe,
+                            A_char_number = 4,
+                            B_char_number = 4,
+                            bias = False,
+                            A_char_1_name = 'A_char_1',
+                            A_char_2_name = 'A_char_2',
+                            A_char_3_name = 'A_char_3',
+                            A_char_4_name = 'A_char_4',
+                            A_bias_char_name = 'A_bias_char',
+                            A_mrs12_name = 'A_mrs12',
+                            A_mrs13_name = 'A_mrs13',
+                            A_mrs14_name = 'A_mrs14',
+                            B_char_1_name = 'B_char_1',
+                            B_char_2_name = 'B_char_2',
+                            B_char_3_name = 'B_char_3',
+                            B_char_4_name = 'B_char_4',
+                            B_mrs12_name = 'B_mrs12',
+                            B_mrs13_name = 'B_mrs13',
+                            B_mrs14_name = 'B_mrs14',
+                            B_bias_mrs_name = 'B_bias_mrs',
+                            A_name='Applicants',
+                            B_name='Reviewers',
+                            spec_name='default',
+                            extra_vars=False,
+                            graphs=True,
+                            save_files=True)
     """
-    spec_name = spec_name + '_' + A_bias_char_name + '_biased'
+
+    print()
+    print('Loading the data...')
 
     # default dataset
     if isinstance(data_input, str) and data_input == 'example_data':
-        np.random.seed(0)
+        np.random.seed(int(str(datetime.now())[17:19]))
         data_input = pd.DataFrame({'A_char_1': np.random.normal(50, 10, 200),
                                     'A_char_2': np.random.normal(50, 10, 200),
                                     'A_char_3': np.random.normal(50, 10, 200),
@@ -1015,6 +1024,28 @@ def four_features_biased(data_input='example_data',
     # DATA PREPARATION
     # ---------------------------------------------------------------
 
+    if A_char_number == 3:
+        data_input[A_char_4_name] = 0
+        data_input[B_mrs14_name] = 0
+    elif A_char_number == 2:
+        data_input[A_char_3_name] = 0
+        data_input[B_mrs13_name] = 0
+        data_input[A_char_4_name] = 0
+        data_input[B_mrs14_name] = 0
+
+    if B_char_number == 3:
+        data_input[B_char_4_name] = 0
+        data_input[A_mrs14_name] = 0
+    elif B_char_number == 2:
+        data_input[B_char_3_name] = 0
+        data_input[A_mrs13_name] = 0
+        data_input[B_char_4_name] = 0
+        data_input[A_mrs14_name] = 0
+
+    if bias == False:
+        data_input[A_bias_char_name] = 0
+        data_input[B_bias_mrs_name] = 0
+
     A = {   'id'            : data_input.index,
             'char_1'        : data_input[A_char_1_name],
             'char_2'        : data_input[A_char_2_name],
@@ -1046,11 +1077,17 @@ def four_features_biased(data_input='example_data',
     # print a message acknowledging the input data
     print()
     print('Data is loaded')
-    print('Applicants characteristics: ', A_char_1_name, A_char_2_name, A_char_3_name, A_char_4_name)
-    print('Applicants MRS: ', A_mrs12_name, A_mrs13_name, A_mrs14_name)
-    print('Reviewers characteristics: ', B_char_1_name, B_char_2_name, B_char_3_name, B_char_4_name)
-    print('Reviewers MRS: ', B_mrs12_name, B_mrs13_name, B_mrs14_name)
+    print('---------------------------------------------------------------')
+    print(A_name + ' characteristics: ', A_char_1_name, A_char_2_name, A_char_3_name, A_char_4_name)
+    print(A_name + ' MRS: ', A_mrs12_name, A_mrs13_name, A_mrs14_name)
+    print(B_name + ' characteristics: ', B_char_1_name, B_char_2_name, B_char_3_name, B_char_4_name)
+    print(B_name + ' MRS: ', B_mrs12_name, B_mrs13_name, B_mrs14_name)
     print('Market size: ', len(A['id']))
+    print('Bias: ', bias)
+    if bias == True:
+        print(B_name + ' are biased towards ' + A_name + ' with ' + A_bias_char_name + ' = 1') 
+        print('at the average rate of ' + str(B['bias_mrs'].mean()))
+    print('---------------------------------------------------------------')
 
     # ---------------------------------------------------------------
     # MATCHING
@@ -1200,133 +1237,152 @@ def four_features_biased(data_input='example_data',
         data_output[spec_name + '_A_dap_match'] = A['match']
         data_output[spec_name + '_B_dap_match'] = B['match']
     
-    data_output[spec_name + '_A_obs_utility'] = B['char_1'] + B['char_2'] * A['mrs12'] + B['char_3'] * A['mrs13'] + B['char_4'] * A['mrs14']
-    data_output[spec_name + '_B_obs_utility'] = A['char_1'] + A['char_2'] * B['mrs12'] + A['char_3'] * B['mrs13'] + A['char_4'] * B['mrs14']
-    data_output[spec_name + '_A_dap_utility'] = A['match_utility']
-    
+    # received payoffs
+    data_output[spec_name + '_A_obs_u'] = B['char_1'] + B['char_2'] * A['mrs12'] + B['char_3'] * A['mrs13'] + B['char_4'] * A['mrs14']
+    data_output[spec_name + '_B_obs_u'] = A['char_1'] + A['char_2'] * B['mrs12'] + A['char_3'] * B['mrs13'] + A['char_4'] * B['mrs14']
+    data_output[spec_name + '_A_dap_u'] = A['match_utility']
+    data_output[spec_name + '_B_dap_u'] = B['match_utility']
+
+    # provided payoffs
+    A_dap_sorted = A.sort_values('match', ascending=True, ignore_index=True)
+    data_output[spec_name + '_B_provided_u'] = A.loc[A_dap_sorted['match'], 'match_utility']
+
     B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
-    print('Sorted correctly:', B_dap_sorted.index.equals(A.index))
+    if bias == True:
+        data_output[spec_name + '_A_provided_u_biased'] = B_dap_sorted['match_utility']
+        data_output[spec_name + '_A_provided_u']        = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
+    else:
+        data_output[spec_name + '_A_provided_u']        = B_dap_sorted['match_utility']
 
-    data_output[spec_name + '_B_dap_apparent_utility'] = B_dap_sorted['match_utility']
-    data_output[spec_name + '_B_dap_utility']          = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
+    # calculate z-scores for observed payoffs
+    data_output[spec_name + '_A_obs_u_z'] = (data_output[spec_name + '_A_obs_u'] - data_output[spec_name + '_A_obs_u'].mean())/data_output[spec_name + '_A_obs_u'].std()
+    data_output[spec_name + '_B_obs_u_z'] = (data_output[spec_name + '_B_obs_u'] - data_output[spec_name + '_B_obs_u'].mean())/data_output[spec_name + '_B_obs_u'].std()
 
-    # calculate z-scores for observed utilities
-    data_output[spec_name + '_A_obs_utility_z'] = (data_output[spec_name + '_A_obs_utility'] - data_output[spec_name + '_A_obs_utility'].mean())/data_output[spec_name + '_A_obs_utility'].std()
-    data_output[spec_name + '_B_obs_utility_z'] = (data_output[spec_name + '_B_obs_utility'] - data_output[spec_name + '_B_obs_utility'].mean())/data_output[spec_name + '_B_obs_utility'].std()
+    # calculate z-scores for dap payoffs
+    data_output[spec_name + '_A_dap_u_z'] = (data_output[spec_name + '_A_dap_u'] - data_output[spec_name + '_A_dap_u'].mean())/data_output[spec_name + '_A_dap_u'].std()
+    data_output[spec_name + '_B_dap_u_z'] = (data_output[spec_name + '_B_dap_u'] - data_output[spec_name + '_B_dap_u'].mean())/data_output[spec_name + '_B_dap_u'].std()
 
-    # calculate z-scores for dap utilities
-    data_output[spec_name + '_A_dap_utility_z'] = (data_output[spec_name + '_A_dap_utility'] - data_output[spec_name + '_A_dap_utility'].mean())/data_output[spec_name + '_A_dap_utility'].std()
-    data_output[spec_name + '_B_dap_utility_z'] = (data_output[spec_name + '_B_dap_utility'] - data_output[spec_name + '_B_dap_utility'].mean())/data_output[spec_name + '_B_dap_utility'].std()
-
-    # calculate difference between observed and dap utilities
-    data_output[spec_name + '_diff_A'] = data_output[spec_name + '_A_obs_utility'] - data_output[spec_name + '_A_dap_utility']
-    data_output[spec_name + '_diff_B'] = data_output[spec_name + '_B_obs_utility'] - data_output[spec_name + '_B_dap_utility']
+    # calculate difference between observed and dap payoffs
+    data_output[spec_name + '_diff_A'] = data_output[spec_name + '_A_obs_u'] - data_output[spec_name + '_A_dap_u']
+    data_output[spec_name + '_diff_B'] = data_output[spec_name + '_B_obs_u'] - data_output[spec_name + '_B_dap_u']
 
     # calculate z-scores for diff_A and diff_B
     data_output[spec_name + '_diff_A_z'] = (data_output[spec_name + '_diff_A'] - data_output[spec_name + '_diff_A'].mean())/data_output[spec_name + '_diff_A'].std()
     data_output[spec_name + '_diff_B_z'] = (data_output[spec_name + '_diff_B'] - data_output[spec_name + '_diff_B'].mean())/data_output[spec_name + '_diff_B'].std() 
 
+    # calculate z-scores for provided payoffs
+    data_output[spec_name + '_A_provided_u_z'] = (data_output[spec_name + '_A_provided_u'] - data_output[spec_name + '_A_provided_u'].mean())/data_output[spec_name + '_A_provided_u'].std()
+    data_output[spec_name + '_B_provided_u_z'] = (data_output[spec_name + '_B_provided_u'] - data_output[spec_name + '_B_provided_u'].mean())/data_output[spec_name + '_B_provided_u'].std()
+    if bias == True:
+        data_output[spec_name + '_A_provided_u_biased_z'] = (data_output[spec_name + '_A_provided_u_biased'] - data_output[spec_name + '_A_provided_u_biased'].mean())/data_output[spec_name + '_A_provided_u_biased'].std()
+
     # ---------------------------------------------------------------
     # GRAPH 1: Available payoffs
     # ---------------------------------------------------------------
 
-    # in the same style as below plot histogram for z-scores of observed utilities
-    plt.figure(figsize=(10, 6))
-    plt.gca().set_facecolor((240/255, 240/255, 240/255))
-    plt.gcf().set_facecolor((240/255, 240/255, 240/255))
-
-    # Define bin edges to ensure same bin width
-    bins = np.linspace(min(data_output[spec_name + '_A_obs_utility_z'].min(), data_output[spec_name + '_B_obs_utility_z'].min()), 
-                    max(data_output[spec_name + '_A_obs_utility_z'].max(), data_output[spec_name + '_B_obs_utility_z'].max()), 51)
-
-    sns.histplot(data_output[spec_name + '_A_obs_utility_z'], bins=bins, color='mediumpurple', alpha=0.5, label=A_name, stat='percent', kde=True)
-    sns.histplot(data_output[spec_name + '_B_obs_utility_z'], bins=bins, color='green', alpha=0.5, label=B_name, stat='percent', kde=True)
-
-    plt.legend(frameon=False, fontsize=28)
-    plt.ylabel('Percent', fontsize=28)
-    plt.xlabel('Z-Score', fontsize=28)
-    plt.title('Available payoffs', fontsize=32)
-
-    # Add grid lines
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-
-    # Remove axis box
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    plt.gca().spines['left'].set_visible(False)
-    plt.gca().spines['bottom'].set_visible(False)
-
-    # Set histogram contour lines to the same color as the background
-    for patch in plt.gca().patches:
-        patch.set_edgecolor((240/255, 240/255, 240/255))
-
-    # Increase tick label size
-    plt.xticks(fontsize=26)
-    plt.yticks(fontsize=26)
-
-    # export the graph as pdf
-    plt.tight_layout()
-    plt.savefig(spec_name + '_available_payoffs.pdf')
+    fig = ridgeplot(samples=[data_output[spec_name + '_A_obs_u_z'],
+                         data_output[spec_name + '_B_obs_u_z']],
+                         labels = [A_name, B_name],
+                         colorscale = "viridis",
+                         colormode = "row-index",
+                         opacity=0.6)
+    fig.update_layout(
+        height=560,
+        width=800,
+        font_size=16,
+        plot_bgcolor="white",
+        xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+        yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+        title="Available payoffs",
+        xaxis_title="Z-Score",
+        showlegend=False,
+    )
+    fig.write_image(spec_name + '_available_payoffs.pdf')
 
     if graphs == True:
-        plt.show()
+        fig.show()
 
     # ---------------------------------------------------------------
     # GRAPH 2: Observed vs. A-Optimal
     # ---------------------------------------------------------------
-
-    plt.figure(figsize=(10, 6))
-    plt.gca().set_facecolor((240/255, 240/255, 240/255))
-    plt.gcf().set_facecolor((240/255, 240/255, 240/255))
-
-    # Define bin edges to ensure same bin width
-    bins = np.linspace(data_output[spec_name + '_diff_A_z'].min(), data_output[spec_name + '_diff_A_z'].max(), 51)
-
-    sns.histplot(data_output[spec_name + '_diff_A_z'], bins=bins, color='mediumpurple', alpha=0.5, label=A_name, stat='percent', kde=True)
-
-    plt.legend(frameon=False, fontsize=28)
-    plt.ylabel('Percent', fontsize=28)
-    plt.xlabel('Z-Score', fontsize=28)
-    plt.title('Observed vs. A-Optimal', fontsize=32)
-
-    # Add grid lines
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-
-    # Remove axis box
-    plt.gca().spines['top'].set_visible(False)
-    plt.gca().spines['right'].set_visible(False)
-    plt.gca().spines['left'].set_visible(False)
-    plt.gca().spines['bottom'].set_visible(False)
-
-    # Set histogram contour lines to the same color as the background
-    for patch in plt.gca().patches:
-        patch.set_edgecolor((240/255, 240/255, 240/255))
-
-    # Increase tick label size
-    plt.xticks(fontsize=26)
-    plt.yticks(fontsize=26)
-
-    # Set x-axis ticks with a step of 1
-    plt.xticks(np.arange(int(data_output[spec_name + '_diff_A_z'].min()), int(data_output[spec_name + '_diff_A_z'].max()) + 1, 1))
-
-    # Calculate statistics for Workers
-    above_one_std_A = (data_output[spec_name + '_diff_A_z'] > 1).mean() * 100
-    below_one_std_A = (data_output[spec_name + '_diff_A_z'] < -1).mean() * 100
-
-    # Add text for statistics
-    textstr = f'Above 1 STD: {above_one_std_A:.1f}%\nBelow -1 STD: {below_one_std_A:.1f}%'
-
-    # Add text box to the plot
-    props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
-    plt.gca().text(0.05, 0.95, textstr, transform=plt.gca().transAxes, fontsize=26,
-                verticalalignment='top', bbox=props)
-
-    # export the graph as pdf
-    plt.tight_layout()
-    plt.savefig(spec_name + '_obs_vs_dap.pdf')
+    fig = ridgeplot(samples=[data_output[spec_name + '_diff_A_z'],
+                         data_output[spec_name + '_diff_B_z']],
+                         labels = [A_name, B_name],
+                         colorscale = "viridis",
+                         colormode = "row-index",
+                         opacity=0.6)
+    fig.update_layout(
+        height=560,
+        width=800,
+        font_size=16,
+        plot_bgcolor="white",
+        xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+        yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+        title="Observed vs. A-Optimal",
+        xaxis_title="Z-Score",
+        showlegend=False,
+    )
+    fig.write_image(spec_name + '_obs_vs_dap.pdf')
 
     if graphs == True:
-        plt.show()
+        fig.show()
+
+    if bias == True:
+        # ---------------------------------------------------------------
+        # GRAPH 3: Bias and reviewes' perceived payoffs
+        # ---------------------------------------------------------------
+        fig = ridgeplot(samples=[data_output[spec_name + '_A_provided_u_biased_z'][data_output['A_bias_char'] == 0],
+                                data_output[spec_name + '_A_provided_u_biased_z'][data_output['A_bias_char'] == 1],
+                                data_output[spec_name + '_A_provided_u_z'][data_output['A_bias_char'] == 0],
+                                data_output[spec_name + '_A_provided_u_z'][data_output['A_bias_char'] == 1]],
+                            labels = ['Biased: Group 0', 'Biased: Group 1', 'Actual: Group 0', 'Actual: Group 1'],
+                            colorscale = "viridis",
+                            colormode = "row-index",
+                            opacity=0.6)
+        fig.update_layout(
+            height=560,
+            width=800,
+            font_size=16,
+            plot_bgcolor="white",
+            xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+            yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+            title= B_name +"' perceived payoffs",
+            xaxis_title="Z-Score",
+            showlegend=False,
+        )
+        fig.write_image(spec_name + '_bias1.pdf')
+
+        if graphs == True:
+            fig.show()
+
+        # ---------------------------------------------------------------
+        # GRAPH 4: Bias effect on the applicants' payoffs
+        # ---------------------------------------------------------------
+        fig = ridgeplot(samples=[data_output[spec_name + '_A_obs_u_z'][data_output['A_bias_char'] == 0],
+                                 data_output[spec_name + '_A_obs_u_z'][data_output['A_bias_char'] == 1],
+                                 data_output[spec_name + '_A_dap_u_z'][data_output['A_bias_char'] == 0],
+                                 data_output[spec_name + '_A_dap_u_z'][data_output['A_bias_char'] == 1],
+                                 data_output[spec_name + '_diff_A_z'][data_output['A_bias_char'] == 0],
+                                 data_output[spec_name + '_diff_A_z'][data_output['A_bias_char'] == 1]],
+                            labels = ['Observed: Group 0', 'Observed: Group 1', 'DAP: Group 0', 'DAP: Group 1', 'Difference: Group 0', 'Difference: Group 1'],
+                            colorscale = "viridis",
+                            colormode = "row-index",
+                            opacity=0.6)
+        fig.update_layout(
+            height=560,
+            width=800,
+            font_size=16,
+            plot_bgcolor="white",
+            xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+            yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+            title="Bias effect on the " + A_name + "' payoffs",
+            xaxis_title="Z-Score",
+            showlegend=False,
+        )
+        fig.write_image(spec_name + '_bias2.pdf')
+
+        if graphs == True:
+            fig.show()
 
     # ---------------------------------------------------------------
     # SAVE OUTPUT FILES
