@@ -1260,16 +1260,11 @@ def rematcher(data_input='example_data',
     data_output[spec_name + '_A_dap_u'] = A['match_utility']
     data_output[spec_name + '_B_dap_u'] = B['match_utility']
 
-    # provided payoffs
-    A_dap_sorted = A.sort_values('match', ascending=True, ignore_index=True)
-    data_output[spec_name + '_B_provided_u'] = A.loc[A_dap_sorted['match'], 'match_utility']
-
-    B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
+    # apparent payoffs
     if bias == True:
-        data_output[spec_name + '_A_provided_u_biased'] = B_dap_sorted['match_utility']
-        data_output[spec_name + '_A_provided_u']        = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
-    else:
-        data_output[spec_name + '_A_provided_u']        = B_dap_sorted['match_utility']
+        B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
+        data_output[spec_name + '_A_apparent_u']           = B_dap_sorted['match_utility']
+        data_output[spec_name + '_A_apparent_corrected_u'] = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
 
     # calculate z-scores for observed payoffs
     data_output[spec_name + '_A_obs_u_z'] = (data_output[spec_name + '_A_obs_u'] - data_output[spec_name + '_A_obs_u'].mean())/data_output[spec_name + '_A_obs_u'].std()
@@ -1286,12 +1281,10 @@ def rematcher(data_input='example_data',
     # calculate z-scores for diff_A and diff_B
     data_output[spec_name + '_diff_A_z'] = (data_output[spec_name + '_diff_A'] - data_output[spec_name + '_diff_A'].mean())/data_output[spec_name + '_diff_A'].std()
     data_output[spec_name + '_diff_B_z'] = (data_output[spec_name + '_diff_B'] - data_output[spec_name + '_diff_B'].mean())/data_output[spec_name + '_diff_B'].std() 
-
-    # calculate z-scores for provided payoffs
-    data_output[spec_name + '_A_provided_u_z'] = (data_output[spec_name + '_A_provided_u'] - data_output[spec_name + '_A_provided_u'].mean())/data_output[spec_name + '_A_provided_u'].std()
-    data_output[spec_name + '_B_provided_u_z'] = (data_output[spec_name + '_B_provided_u'] - data_output[spec_name + '_B_provided_u'].mean())/data_output[spec_name + '_B_provided_u'].std()
+    
     if bias == True:
-        data_output[spec_name + '_A_provided_u_biased_z'] = (data_output[spec_name + '_A_provided_u_biased'] - data_output[spec_name + '_A_provided_u_biased'].mean())/data_output[spec_name + '_A_provided_u_biased'].std()
+        data_output[spec_name + '_A_apparent_u_z'] = (data_output[spec_name + '_A_apparent_u'] - data_output[spec_name + '_A_apparent_u'].mean())/data_output[spec_name + '_A_apparent_u'].std()
+        data_output[spec_name + '_A_apparent_corrected_u_z'] = (data_output[spec_name + '_A_apparent_corrected_u'] - data_output[spec_name + '_A_apparent_corrected_u'].mean())/data_output[spec_name + '_A_apparent_corrected_u'].std()
 
     if graphs == True:
         # ---------------------------------------------------------------
@@ -1347,11 +1340,11 @@ def rematcher(data_input='example_data',
             # ---------------------------------------------------------------
             # GRAPH 3: Bias and reviewes' perceived payoffs
             # ---------------------------------------------------------------
-            fig = ridgeplot(samples=[data_output[spec_name + '_A_provided_u_biased_z'][data_output[A_bias_char_name] == 0],
-                                    data_output[spec_name + '_A_provided_u_biased_z'][data_output[A_bias_char_name] == 1],
-                                    data_output[spec_name + '_A_provided_u_z'][data_output[A_bias_char_name] == 0],
-                                    data_output[spec_name + '_A_provided_u_z'][data_output[A_bias_char_name] == 1]],
-                                labels = ['Biased: Group 0', 'Biased: Group 1', 'Actual: Group 0', 'Actual: Group 1'],
+            fig = ridgeplot(samples=[data_output[spec_name + '_A_apparent_u_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_apparent_u_z'][data_output[A_bias_char_name] == 1],
+                                    data_output[spec_name + '_A_apparent_corrected_u_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_apparent_corrected_u_z'][data_output[A_bias_char_name] == 1]],
+                                labels = ['Biased: Group 0', 'Biased: Group 1', 'Corrected: Group 0', 'Corrected: Group 1'],
                                 colorscale = "viridis", nbins=20,
                                 colormode = "row-index",
                                 opacity=0.6)
