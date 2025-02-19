@@ -1254,17 +1254,17 @@ def rematcher(data_input='example_data',
         data_output[spec_name + '_A_dap_match'] = A['match']
         data_output[spec_name + '_B_dap_match'] = B['match']
     
-    # received payoffs
+    # payoffs
     data_output[spec_name + '_A_obs_u'] = B['char_1'] + B['char_2'] * A['mrs12'] + B['char_3'] * A['mrs13'] + B['char_4'] * A['mrs14']
     data_output[spec_name + '_B_obs_u'] = A['char_1'] + A['char_2'] * B['mrs12'] + A['char_3'] * B['mrs13'] + A['char_4'] * B['mrs14']
     data_output[spec_name + '_A_dap_u'] = A['match_utility']
     data_output[spec_name + '_B_dap_u'] = B['match_utility']
 
-    # apparent payoffs
+    # apparent values
     if bias == True:
         B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
-        data_output[spec_name + '_A_apparent_u']           = B_dap_sorted['match_utility']
-        data_output[spec_name + '_A_apparent_corrected_u'] = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
+        data_output[spec_name + '_A_apparent_v']           = B_dap_sorted['match_utility']
+        data_output[spec_name + '_A_apparent_corrected_v'] = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
 
     # calculate z-scores for observed payoffs
     data_output[spec_name + '_A_obs_u_z'] = (data_output[spec_name + '_A_obs_u'] - data_output[spec_name + '_A_obs_u'].mean())/data_output[spec_name + '_A_obs_u'].std()
@@ -1283,8 +1283,8 @@ def rematcher(data_input='example_data',
     data_output[spec_name + '_diff_B_z'] = (data_output[spec_name + '_diff_B'] - data_output[spec_name + '_diff_B'].mean())/data_output[spec_name + '_diff_B'].std() 
     
     if bias == True:
-        data_output[spec_name + '_A_apparent_u_z'] = (data_output[spec_name + '_A_apparent_u'] - data_output[spec_name + '_A_apparent_u'].mean())/data_output[spec_name + '_A_apparent_u'].std()
-        data_output[spec_name + '_A_apparent_corrected_u_z'] = (data_output[spec_name + '_A_apparent_corrected_u'] - data_output[spec_name + '_A_apparent_corrected_u'].mean())/data_output[spec_name + '_A_apparent_corrected_u'].std()
+        data_output[spec_name + '_A_apparent_v_z'] = (data_output[spec_name + '_A_apparent_v'] - data_output[spec_name + '_A_apparent_v'].mean())/data_output[spec_name + '_A_apparent_v'].std()
+        data_output[spec_name + '_A_apparent_corrected_v_z'] = (data_output[spec_name + '_A_apparent_corrected_v'] - data_output[spec_name + '_A_apparent_corrected_v'].mean())/data_output[spec_name + '_A_apparent_corrected_v'].std()
 
     if graphs == True:
         # ---------------------------------------------------------------
@@ -1338,12 +1338,12 @@ def rematcher(data_input='example_data',
 
         if bias == True:
             # ---------------------------------------------------------------
-            # GRAPH 3: Bias and reviewes' perceived payoffs
+            # GRAPH 3: Bias and reviewes' apparent values
             # ---------------------------------------------------------------
-            fig = ridgeplot(samples=[data_output[spec_name + '_A_apparent_u_z'][data_output[A_bias_char_name] == 0],
-                                    data_output[spec_name + '_A_apparent_u_z'][data_output[A_bias_char_name] == 1],
-                                    data_output[spec_name + '_A_apparent_corrected_u_z'][data_output[A_bias_char_name] == 0],
-                                    data_output[spec_name + '_A_apparent_corrected_u_z'][data_output[A_bias_char_name] == 1]],
+            fig = ridgeplot(samples=[data_output[spec_name + '_A_apparent_v_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_apparent_v_z'][data_output[A_bias_char_name] == 1],
+                                    data_output[spec_name + '_A_apparent_corrected_v_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_apparent_corrected_v_z'][data_output[A_bias_char_name] == 1]],
                                 labels = ['Biased: Group 0', 'Biased: Group 1', 'Corrected: Group 0', 'Corrected: Group 1'],
                                 colorscale = "viridis", nbins=20,
                                 colormode = "row-index",
@@ -1355,7 +1355,7 @@ def rematcher(data_input='example_data',
                 plot_bgcolor="white",
                 xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
                 yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-                title= B_name +"' perceived payoffs",
+                title= B_name +"' apparent values",
                 xaxis_title="Z-Score",
                 showlegend=False,
             )
