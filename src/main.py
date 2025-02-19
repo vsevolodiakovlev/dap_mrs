@@ -894,9 +894,9 @@ def rematcher(data_input='example_data',
     data_input : str or pd.DataFrame, optional
         The dataset to use for the matching process. If 'example_data', a default dataset will be generated. Default is 'example_data'.
     A_char_number : int, optional
-        The number of applicants' characteristics. Default is 4.
+        The number of applicants' characteristics. Can take values of 2, 3, or 4. Default is 4.
     B_char_number : int, optional
-        The number of reviewers' characteristics. Default is 4.
+        The number of reviewers' characteristics. Can take values of 2, 3, or 4. Default is 4.
     bias : bool, optional
         If True, the reviewers' bias will be included in the matching process. Default is False.
     A_char_1_name : str, optional
@@ -977,16 +977,19 @@ def rematcher(data_input='example_data',
                             B_mrs13_name = 'B_mrs13',
                             B_mrs14_name = 'B_mrs14',
                             B_bias_mrs_name = 'B_bias_mrs',
-                            A_name='Applicants',
-                            B_name='Reviewers',
-                            spec_name='default',
-                            extra_vars=False,
-                            graphs=True,
-                            save_files=True)
+                            A_name = 'Applicants',
+                            B_name = 'Reviewers',
+                            spec_name = 'default',
+                            extra_vars = False,
+                            graphs = True,
+                            save_files = True)
     """
 
     print()
     print('Loading the data...')
+
+    A_bias_char_name = spec_name + '_' + A_bias_char_name
+    B_bias_mrs_name = spec_name + '_' + B_bias_mrs_name
 
     # default dataset
     if isinstance(data_input, str) and data_input == 'example_data':
@@ -1086,7 +1089,7 @@ def rematcher(data_input='example_data',
     print('Bias: ', bias)
     if bias == True:
         print(B_name + ' are biased towards ' + A_name + ' with ' + A_bias_char_name + ' = 1') 
-        print('at the average rate of ' + str(B['bias_mrs'].mean()))
+        print('at the average rate of ' + str(round(B['bias_mrs'].mean(),2)))
     print('---------------------------------------------------------------')
 
     # ---------------------------------------------------------------
@@ -1229,6 +1232,20 @@ def rematcher(data_input='example_data',
     # RESULTS
     # ---------------------------------------------------------------
 
+    if A_char_number == 3:
+        data_input.drop(columns=[A_char_4_name, B_mrs14_name], inplace=True)
+    elif A_char_number == 2:
+        data_input.drop(columns=[A_char_3_name, B_mrs13_name, 
+                                 A_char_4_name, B_mrs14_name], inplace=True)
+
+    if B_char_number == 3:
+        data_input.drop(columns=[B_char_4_name, A_mrs14_name], inplace=True)
+    elif B_char_number == 2:
+        data_input.drop(columns=[B_char_3_name, A_mrs13_name,
+                                    B_char_4_name, A_mrs14_name], inplace=True)
+    if bias == False:
+        data_input.drop(columns=[A_bias_char_name, B_bias_mrs_name], inplace=True)
+
     data_output = data_input.copy()
     
     # update the dataset with the matching results
@@ -1276,67 +1293,15 @@ def rematcher(data_input='example_data',
     if bias == True:
         data_output[spec_name + '_A_provided_u_biased_z'] = (data_output[spec_name + '_A_provided_u_biased'] - data_output[spec_name + '_A_provided_u_biased'].mean())/data_output[spec_name + '_A_provided_u_biased'].std()
 
-    # ---------------------------------------------------------------
-    # GRAPH 1: Available payoffs
-    # ---------------------------------------------------------------
-
-    fig = ridgeplot(samples=[data_output[spec_name + '_A_obs_u_z'],
-                         data_output[spec_name + '_B_obs_u_z']],
-                         labels = [A_name, B_name],
-                         colorscale = "viridis",
-                         colormode = "row-index",
-                         opacity=0.6)
-    fig.update_layout(
-        height=560,
-        width=800,
-        font_size=16,
-        plot_bgcolor="white",
-        xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-        yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-        title="Available payoffs",
-        xaxis_title="Z-Score",
-        showlegend=False,
-    )
-    fig.write_image(spec_name + '_available_payoffs.pdf')
-
     if graphs == True:
-        fig.show()
-
-    # ---------------------------------------------------------------
-    # GRAPH 2: Observed vs. A-Optimal
-    # ---------------------------------------------------------------
-    fig = ridgeplot(samples=[data_output[spec_name + '_diff_A_z'],
-                         data_output[spec_name + '_diff_B_z']],
-                         labels = [A_name, B_name],
-                         colorscale = "viridis",
-                         colormode = "row-index",
-                         opacity=0.6)
-    fig.update_layout(
-        height=560,
-        width=800,
-        font_size=16,
-        plot_bgcolor="white",
-        xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-        yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-        title="Observed vs. A-Optimal",
-        xaxis_title="Z-Score",
-        showlegend=False,
-    )
-    fig.write_image(spec_name + '_obs_vs_dap.pdf')
-
-    if graphs == True:
-        fig.show()
-
-    if bias == True:
         # ---------------------------------------------------------------
-        # GRAPH 3: Bias and reviewes' perceived payoffs
+        # GRAPH 1: Available payoffs
         # ---------------------------------------------------------------
-        fig = ridgeplot(samples=[data_output[spec_name + '_A_provided_u_biased_z'][data_output['A_bias_char'] == 0],
-                                data_output[spec_name + '_A_provided_u_biased_z'][data_output['A_bias_char'] == 1],
-                                data_output[spec_name + '_A_provided_u_z'][data_output['A_bias_char'] == 0],
-                                data_output[spec_name + '_A_provided_u_z'][data_output['A_bias_char'] == 1]],
-                            labels = ['Biased: Group 0', 'Biased: Group 1', 'Actual: Group 0', 'Actual: Group 1'],
-                            colorscale = "viridis",
+
+        fig = ridgeplot(samples=[data_output[spec_name + '_A_obs_u_z'],
+                            data_output[spec_name + '_B_obs_u_z']],
+                            labels = [A_name, B_name],
+                            colorscale = "viridis", nbins=20,
                             colormode = "row-index",
                             opacity=0.6)
         fig.update_layout(
@@ -1346,42 +1311,91 @@ def rematcher(data_input='example_data',
             plot_bgcolor="white",
             xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
             yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-            title= B_name +"' perceived payoffs",
+            title="Available payoffs",
             xaxis_title="Z-Score",
             showlegend=False,
         )
-        fig.write_image(spec_name + '_bias1.pdf')
+        fig.write_image(spec_name + '_available_payoffs.pdf')
 
-        if graphs == True:
+        fig.show()
+
+        # ---------------------------------------------------------------
+        # GRAPH 2: Observed vs. A-Optimal
+        # ---------------------------------------------------------------
+        fig = ridgeplot(samples=[data_output[spec_name + '_diff_A_z'],
+                            data_output[spec_name + '_diff_B_z']],
+                            labels = [A_name, B_name],
+                            colorscale = "viridis", nbins=20,
+                            colormode = "row-index",
+                            opacity=0.6)
+        fig.update_layout(
+            height=560,
+            width=800,
+            font_size=16,
+            plot_bgcolor="white",
+            xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+            yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+            title="Observed vs. A-Optimal",
+            xaxis_title="Z-Score",
+            showlegend=False,
+        )
+        fig.write_image(spec_name + '_obs_vs_dap.pdf')
+
+        fig.show()
+
+        if bias == True:
+            # ---------------------------------------------------------------
+            # GRAPH 3: Bias and reviewes' perceived payoffs
+            # ---------------------------------------------------------------
+            fig = ridgeplot(samples=[data_output[spec_name + '_A_provided_u_biased_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_provided_u_biased_z'][data_output[A_bias_char_name] == 1],
+                                    data_output[spec_name + '_A_provided_u_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_provided_u_z'][data_output[A_bias_char_name] == 1]],
+                                labels = ['Biased: Group 0', 'Biased: Group 1', 'Actual: Group 0', 'Actual: Group 1'],
+                                colorscale = "viridis", nbins=20,
+                                colormode = "row-index",
+                                opacity=0.6)
+            fig.update_layout(
+                height=560,
+                width=800,
+                font_size=16,
+                plot_bgcolor="white",
+                xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+                yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+                title= B_name +"' perceived payoffs",
+                xaxis_title="Z-Score",
+                showlegend=False,
+            )
+            fig.write_image(spec_name + '_bias1.pdf')
+
             fig.show()
 
-        # ---------------------------------------------------------------
-        # GRAPH 4: Bias effect on the applicants' payoffs
-        # ---------------------------------------------------------------
-        fig = ridgeplot(samples=[data_output[spec_name + '_A_obs_u_z'][data_output['A_bias_char'] == 0],
-                                 data_output[spec_name + '_A_obs_u_z'][data_output['A_bias_char'] == 1],
-                                 data_output[spec_name + '_A_dap_u_z'][data_output['A_bias_char'] == 0],
-                                 data_output[spec_name + '_A_dap_u_z'][data_output['A_bias_char'] == 1],
-                                 data_output[spec_name + '_diff_A_z'][data_output['A_bias_char'] == 0],
-                                 data_output[spec_name + '_diff_A_z'][data_output['A_bias_char'] == 1]],
-                            labels = ['Observed: Group 0', 'Observed: Group 1', 'DAP: Group 0', 'DAP: Group 1', 'Difference: Group 0', 'Difference: Group 1'],
-                            colorscale = "viridis",
-                            colormode = "row-index",
-                            opacity=0.6)
-        fig.update_layout(
-            height=560,
-            width=800,
-            font_size=16,
-            plot_bgcolor="white",
-            xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-            yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
-            title="Bias effect on the " + A_name + "' payoffs",
-            xaxis_title="Z-Score",
-            showlegend=False,
-        )
-        fig.write_image(spec_name + '_bias2.pdf')
+            # ---------------------------------------------------------------
+            # GRAPH 4: Bias effect on the applicants' payoffs
+            # ---------------------------------------------------------------
+            fig = ridgeplot(samples=[data_output[spec_name + '_A_obs_u_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_obs_u_z'][data_output[A_bias_char_name] == 1],
+                                    data_output[spec_name + '_A_dap_u_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_A_dap_u_z'][data_output[A_bias_char_name] == 1],
+                                    data_output[spec_name + '_diff_A_z'][data_output[A_bias_char_name] == 0],
+                                    data_output[spec_name + '_diff_A_z'][data_output[A_bias_char_name] == 1]],
+                                labels = ['Observed: Group 0', 'Observed: Group 1', 'DAP: Group 0', 'DAP: Group 1', 'Difference: Group 0', 'Difference: Group 1'],
+                                colorscale = "viridis", nbins=20,
+                                colormode = "row-index",
+                                opacity=0.6)
+            fig.update_layout(
+                height=560,
+                width=800,
+                font_size=16,
+                plot_bgcolor="white",
+                xaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+                yaxis_gridcolor="rgba(0, 0, 0, 0.1)",
+                title="Bias effect on the " + A_name + "' payoffs",
+                xaxis_title="Z-Score",
+                showlegend=False,
+            )
+            fig.write_image(spec_name + '_bias2.pdf')
 
-        if graphs == True:
             fig.show()
 
     # ---------------------------------------------------------------
