@@ -37,6 +37,8 @@ import dap_mrs
 7. Run the algorithm
 
 ## Functions
+**main:** [`matching`](#dam_mrsmatching)  
+**graphs:** [`available_payoffs`](#dap_mrsgaphsavailable_payoffs) | [`observed_vs_dap`](#dap_mrsgaphsobserved_vs_dap) | [`apparent_values`](#dap_mrsgaphsapparent_values) | [`bias_effect`](#dap_mrsgaphsbias_effect)
 
 ### `dam_mrs.matching`
 
@@ -289,6 +291,7 @@ _**Returns:**_
 The plotly figure object.
 
 ## Examples
+[Default parameters](#default-parameters) | [Biased reviewer](#biased-reviewer)
 
 ### Default parameters
 
@@ -333,7 +336,7 @@ and 2 graphs:
  - **obs_vs_dap** - the difference between the payoffs of the applicants in the observed (original) and the A-Optimal (dap-computed) allocations
 ![figure](./figures/default_obs_vs_dap.svg)
 
-### Bias (pre-specified)
+### Biased reviewer
 
 Let us run a biased version of the procedure. As before, we will use the default parameters, but this time turning on the bias:
 
@@ -358,8 +361,9 @@ The function will return 2 data frames:
 ![figure](./figures/biased_bias_effect.svg)
 
 ## Codebook
+[Output data](#output-data) | [Log](#log)
 
-### Output datas
+### Output data
 
 | **Variable Name**         | **Description**                                                                                     | **Condition**                     |
 |---------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
