@@ -37,10 +37,10 @@ import dap_mrs
 7. Run the algorithm
 
 ## Functions
-**main:** [`matching`](#dam_mrsmatching)  
+**main:** [`matching`](#dap_mrsmatching)  
 **graphs:** [`available_payoffs`](#dap_mrsgraphsavailable_payoffs) | [`observed_vs_dap`](#dap_mrsgraphsobserved_vs_dap) | [`apparent_values`](#dap_mrsgraphsapparent_values) | [`bias_effect`](#dap_mrsgraphsbias_effect)
 
-### `dam_mrs.matching`
+### `dap_mrs.matching`
 
 Perform the Deferred Acceptance Procedure (DAP) based on the data for the agents' characteristics and the marginal rates of substitution (MRS) between the characteristics of their counterparts.
 
