@@ -113,6 +113,7 @@ The function will return 2 data frames:
 **main:** [`matching`](#dap_mrsmatching)  
 **graphs:** [`available_payoffs`](#dap_mrsgraphsavailable_payoffs) | [`observed_vs_dap`](#dap_mrsgraphsobserved_vs_dap) | [`apparent_values`](#dap_mrsgraphsapparent_values) | [`bias_effect`](#dap_mrsgraphsbias_effect)
 
+---
 ### `dap_mrs.matching`
 
 Perform the Deferred Acceptance Procedure (DAP) based on the data for the agents' characteristics and the marginal rates of substitution (MRS) between the characteristics of their counterparts.
@@ -212,11 +213,11 @@ The updated dataset with matching results.
 The log of the matching process.
 
 ---
-
 ### `dap_mrs.graphs.available_payoffs`
-----
 
 Plot the available payoffs for the Applicants and Reviewers.
+
+---
 
 _**Parameters:**_
 
