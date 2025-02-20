@@ -241,7 +241,7 @@ def bias_effect(data_input,
                 extension = 'pdf'):
     
     """
-    Plot the bias' effect onA the payoffs of the Applicants for the two groups of agents defined by the bias characteristic.
+    Plot the Applicants' payoffs for the two groups of agents defined by the bias characteristic.
 
     Parameters
     ----------

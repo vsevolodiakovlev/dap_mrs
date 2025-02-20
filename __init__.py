@@ -17,7 +17,7 @@ The module includes the following functions:
     - graphs.apparent_values
         Plot the Reviewers' apparent values for the two groups of agents defined by the bias characteristic.
     - graphs.bias_effect
-        Plot the bias' effect on the payoffs of the Applicants for the two groups of agents defined by the bias characteristic.
+        Plot the Applicants' payoffs for the two groups of agents defined by the bias characteristic.
 
 For more information, see https://github.com/vsevolodiakovlev/dap_mrs/blob/main/README.md.
 
