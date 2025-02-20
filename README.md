@@ -38,7 +38,7 @@ import dap_mrs
 
 ## Functions
 **main:** [`matching`](#dam_mrsmatching)  
-**graphs:** [`available_payoffs`](#dap_mrsgaphsavailable_payoffs) | [`observed_vs_dap`](#dap_mrsgaphsobserved_vs_dap) | [`apparent_values`](#dap_mrsgaphsapparent_values) | [`bias_effect`](#dap_mrsgaphsbias_effect)
+**graphs:** [`available_payoffs`](#dap_mrsgraphsavailable_payoffs) | [`observed_vs_dap`](#dap_mrsgraphsobserved_vs_dap) | [`apparent_values`](#dap_mrsgraphsapparent_values) | [`bias_effect`](#dap_mrsgraphsbias_effect)
 
 ### `dam_mrs.matching`
 
