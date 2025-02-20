@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 import os
 from datetime import datetime
 from dap_mrs.src import graphs
@@ -27,12 +25,12 @@ def matching(data_input='example_data',
         B_mrs13_name = 'B_mrs13',
         B_mrs14_name = 'B_mrs14',
         B_bias_mrs_name = 'B_bias_mrs',
-        A_name='Applicants',
-        B_name='Reviewers',
-        spec_name='default',
-        dap_allocation_vars=False,
-        plot_graphs=True,
-        save_files=True,
+        A_name = 'Applicants',
+        B_name = 'Reviewers',
+        spec_name = 'default',
+        dap_allocation_vars = False,
+        plot_graphs = True,
+        save_files = True,
         seed = None):
         
     """
@@ -88,10 +86,8 @@ def matching(data_input='example_data',
     spec_name : str, optional
         Specification name. Used to name the output files and new variables. Default is 'default'.
     dap_allocation_vars : bool, optional
-        If True, in addition to the variables containing the payoffs, z-scores, and the difference 
-        between the observed and DAP-generated payoffs and their z-scores, the output file will also 
-        contain applicants' and reviewers' initially assigned indices and the indices of their matches. 
-        Default is False.
+        If True, in addition to the variables containing applicants' and reviewers' initially assigned indices, 
+        the indices of their A-Optimal matches, as well as their characteristics. Default is False.
     graphs : bool, optional
         If True, the output graphs will be plotted. Default is True.
     save_files : bool, optional
