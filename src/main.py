@@ -31,8 +31,9 @@ def matching(data_input='example_data',
         B_name='Reviewers',
         spec_name='default',
         dap_allocation_vars=False,
-        graphs=True,
-        save_files=True):
+        plot_graphs=True,
+        save_files=True,
+        seed = None):
         
     """
     Perform the Deferred Acceptance Procedure (DAP) based on the data for the agents' characteristics 
@@ -95,6 +96,8 @@ def matching(data_input='example_data',
         If True, the output graphs will be plotted. Default is True.
     save_files : bool, optional
         If True, the output files will be saved. Default is True.
+    seed : int, optional
+        Random seed. If None, the seed will be generated based on the current time. Default is None.
 
     Returns
     -------
@@ -131,20 +134,20 @@ def matching(data_input='example_data',
     ...                                     spec_name='default',
     ...                                     dap_allocation_vars=False,
     ...                                     graphs=True,
-    ...                                     save_files=True)
+    ...                                     save_files=True,
+    ...                                     seed=None)
 
     """
 
     print()
     print('Loading the data...')
 
-    # add spec_name to the variable names
-    A_bias_char_name = spec_name + '_' + A_bias_char_name
-    B_bias_mrs_name = spec_name + '_' + B_bias_mrs_name
-
     # default dataset
     if isinstance(data_input, str) and data_input == 'example_data':
-        np.random.seed(int(str(datetime.now())[17:19]))
+        if seed == None:
+            np.random.seed(int(str(datetime.now())[17:19]))
+        else:
+            np.random.seed(seed)
         data_input = pd.DataFrame({'A_char_1': np.random.normal(50, 10, 200),
                                     'A_char_2': np.random.normal(50, 10, 200),
                                     'A_char_3': np.random.normal(50, 10, 200),
@@ -431,8 +434,8 @@ def matching(data_input='example_data',
     
     # calculate z-scores for apparent values
     if bias == True:
-        data_output[spec_name + '_A_apparent_v_z'] = (data_output[spec_name + '_A_apparent_v'] - data_output[spec_name + '_A_apparent_v'].mean())/data_output[spec_name + '_A_apparent_v'].std()
-        data_output[spec_name + '_A_apparent_corrected_v_z'] = (data_output[spec_name + '_A_apparent_corrected_v'] - data_output[spec_name + '_A_apparent_corrected_v'].mean())/data_output[spec_name + '_A_apparent_corrected_v'].std()
+        data_output[spec_name + '_bidap_A_apparent_v_z']           = (data_output[spec_name + '_bidap_A_apparent_v'] - data_output[spec_name + '_bidap_A_apparent_v'].mean())/data_output[spec_name + '_bidap_A_apparent_v'].std()
+        data_output[spec_name + '_bidap_A_apparent_corrected_v_z'] = (data_output[spec_name + '_bidap_A_apparent_corrected_v'] - data_output[spec_name + '_bidap_A_apparent_corrected_v'].mean())/data_output[spec_name + '_bidap_A_apparent_corrected_v'].std()
 
     # drop unnecessary columns
     if A_char_number == 3:
@@ -462,15 +465,38 @@ def matching(data_input='example_data',
         data_output.drop(columns=[A_bias_char_name, B_bias_mrs_name], inplace=True)
 
 
-    if graphs == True:
-        graphs.available_payoffs(data_output, spec_name, A_name, B_name)
-        graphs.observed_vs_dap(data_output, spec_name, A_name, B_name)
+    if plot_graphs == True:
+        
+        graphs.available_payoffs(data_input = data_output,
+                                 spec_name = spec_name, 
+                                 A_name = A_name,
+                                 B_name = B_name,
+                                 save_graph=save_files,
+                                 extension='svg')
+        
+        graphs.observed_vs_dap(data_input = data_output,
+                                 spec_name = spec_name, 
+                                 A_name = A_name,
+                                 B_name = B_name,
+                                 save_graph=save_files,
+                                 extension='svg')
 
         if bias == True:
-            graphs.apparent_values(data_output, spec_name, A_name, A_bias_char_name)
-            graphs.bias_effect(data_output, spec_name, A_name, A_bias_char_name)
+            
+            graphs.apparent_values(data_input = data_output,
+                                   spec_name = spec_name, 
+                                   A_name = A_name,
+                                   A_bias_char_name = A_bias_char_name,
+                                   save_graph=save_files,
+                                   extension='svg')
+            
+            graphs.bias_effect(data_input = data_output,
+                                spec_name = spec_name, 
+                                A_name = A_name,
+                                A_bias_char_name = A_bias_char_name,
+                                save_graph=save_files,
+                                extension='svg')
         
-
     # ---------------------------------------------------------------
     # SAVE OUTPUT FILES
     # ---------------------------------------------------------------
