@@ -36,6 +36,76 @@ import dap_mrs
 6. Specify the input parameters
 7. Run the algorithm
 
+## Examples
+[Default parameters](#default-parameters) | [Biased reviewer](#biased-reviewer)
+
+### Default parameters
+
+Let us run the programme without specifying any parameters except the seed for reproducibility:
+
+```python
+output_data, log = dap_mrs.matching(seed=43)
+```
+
+Without input data provided the function will generate the following simulated dataset:
+
+```python
+pd.DataFrame({'A_char_1': np.random.normal(50, 10, 200),
+              'A_char_2': np.random.normal(50, 10, 200),
+              'A_char_3': np.random.normal(50, 10, 200),
+              'A_char_4': np.random.normal(50, 10, 200),
+              'A_mrs12': [1.75] * 200,
+              'A_mrs13': [1.25] * 200,
+              'A_mrs14': [0.75] * 200,
+              'B_char_1': np.random.normal(50, 10, 200),
+              'B_char_2': np.random.normal(50, 10, 200),
+              'B_char_3': np.random.normal(50, 10, 200),
+              'B_char_4': np.random.normal(50, 10, 200),
+              'B_mrs12': [1.75] * 200,
+              'B_mrs13': [1.25] * 200,
+              'B_mrs14': [0.75] * 200,
+              'A_bias_char': np.random.binomial(1, 0.5, 200),
+              'B_bias_mrs': [-25] * 200})
+```
+
+_**Note:** Although the bias characteristics are specified, the procedure will ignore them by default._
+
+The function will return 2 data frames:
+ - **output_data** — modified input data file with the matching results added as new columns
+ - **log** — additional file containing information about each iteration of the algorithm
+ 
+_**Note:** Specifying `dap_allocation_vars=True` will return the output data with the additional columns containing applicants' and reviewers' initially assigned index, the index of their applicants' A-Optimal matches (reviewers), as well as their characteristics. This can be useful if the relationship between the characteristics of the DAP-assigned agents is of interest._
+
+and 2 graphs: 
+ - **available_payoffs** - available payoffs for applicants and reviewers
+ ![figure](./figures/default_available_payoffs.svg) 
+ - **obs_vs_dap** - the difference between the payoffs of the applicants in the observed (original) and the A-Optimal (dap-computed) allocations
+![figure](./figures/default_obs_vs_dap.svg)
+
+### Biased reviewer
+
+Let us run a biased version of the procedure. As before, we will use the default parameters, but this time turning on the bias:
+
+```python
+output_data, log = dap_mrs.matching(bias=True, spec_name = "biased", seed=43)
+```
+
+As displayed above, the simulated data includes the applicants' binary characteristic `'A_bias_char'` and the reviewers' bias in the form of the MRS `'B_bias_mrs'`, which by default is set to -25. This suggests that every applicant with `'A_bias_char'` of 1 will appear to the reviewer as if they provide 25 units lower payoff than another applicant with the same set of characteristics but with `'A_bias_char'` of 0.
+
+The function will return 2 data frames:
+ - **output_data** — same as before but containing index of the applicants' biased-DAP-assigned matches (reviewers) and their characteristics, as well as the applicants "apparent values", i.e. potential payoffs that can be obtained from matching with the applicant as it appears to the reviewer, and their bias-corrected version.
+ - **log** — same as before
+
+ and 4 graphs:
+ - **available_payoffs** - as before (not affected by the matching procedure)
+ ![figure](./figures/biased_available_payoffs.svg) 
+ - **obs_vs_dap** - as before (may be different due to the change in the reviewers perception of the applicants)
+ ![figure](./figures/biased_obs_vs_dap.svg)
+ - **apparent_values** - the payoffs that can be obtained from matching with the applicant as they appear to the reviewers by `'A_bias_char'`
+ ![figure](./figures/biased_apparent_values.svg)
+ - **bias_effect** - applicants' payoffs obtained in the observed (presumably unbiased) allocation, payoffs obtained in the biased DAP-produced allocation, and the difference between the two — all by `'A_bias_char'`
+![figure](./figures/biased_bias_effect.svg)
+
 ## Functions
 **main:** [`matching`](#dap_mrsmatching)  
 **graphs:** [`available_payoffs`](#dap_mrsgraphsavailable_payoffs) | [`observed_vs_dap`](#dap_mrsgraphsobserved_vs_dap) | [`apparent_values`](#dap_mrsgraphsapparent_values) | [`bias_effect`](#dap_mrsgraphsbias_effect)
@@ -289,76 +359,6 @@ _**Returns:**_
 
 **`fig` : plotly.graph_objs._figure.Figure.**
 The plotly figure object.
-
-## Examples
-[Default parameters](#default-parameters) | [Biased reviewer](#biased-reviewer)
-
-### Default parameters
-
-Let us run the programme without specifying any parameters except the seed for reproducibility:
-
-```python
-output_data, log = dap_mrs.matching(seed=43)
-```
-
-Without input data provided the function will generate the following simulated dataset:
-
-```python
-pd.DataFrame({'A_char_1': np.random.normal(50, 10, 200),
-              'A_char_2': np.random.normal(50, 10, 200),
-              'A_char_3': np.random.normal(50, 10, 200),
-              'A_char_4': np.random.normal(50, 10, 200),
-              'A_mrs12': [1.75] * 200,
-              'A_mrs13': [1.25] * 200,
-              'A_mrs14': [0.75] * 200,
-              'B_char_1': np.random.normal(50, 10, 200),
-              'B_char_2': np.random.normal(50, 10, 200),
-              'B_char_3': np.random.normal(50, 10, 200),
-              'B_char_4': np.random.normal(50, 10, 200),
-              'B_mrs12': [1.75] * 200,
-              'B_mrs13': [1.25] * 200,
-              'B_mrs14': [0.75] * 200,
-              'A_bias_char': np.random.binomial(1, 0.5, 200),
-              'B_bias_mrs': [-25] * 200})
-```
-
-_**Note:** Although the bias characteristics are specified, the procedure will ignore them by default._
-
-The function will return 2 data frames:
- - **output_data** — modified input data file with the matching results added as new columns
- - **log** — additional file containing information about each iteration of the algorithm
- 
-_**Note:** Specifying `dap_allocation_vars=True` will return the output data with the additional columns containing applicants' and reviewers' initially assigned index, the index of their applicants' A-Optimal matches (reviewers), as well as their characteristics. This can be useful if the relationship between the characteristics of the DAP-assigned agents is of interest._
-
-and 2 graphs: 
- - **available_payoffs** - available payoffs for applicants and reviewers
- ![figure](./figures/default_available_payoffs.svg) 
- - **obs_vs_dap** - the difference between the payoffs of the applicants in the observed (original) and the A-Optimal (dap-computed) allocations
-![figure](./figures/default_obs_vs_dap.svg)
-
-### Biased reviewer
-
-Let us run a biased version of the procedure. As before, we will use the default parameters, but this time turning on the bias:
-
-```python
-output_data, log = dap_mrs.matching(bias=True, spec_name = "biased", seed=43)
-```
-
-As displayed above, the simulated data includes the applicants' binary characteristic `'A_bias_char'` and the reviewers' bias in the form of the MRS `'B_bias_mrs'`, which by default is set to -25. This suggests that every applicant with `'A_bias_char'` of 1 will appear to the reviewer as if they provide 25 units lower payoff than another applicant with the same set of characteristics but with `'A_bias_char'` of 0.
-
-The function will return 2 data frames:
- - **output_data** — same as before but containing index of the applicants' biased-DAP-assigned matches (reviewers) and their characteristics, as well as the applicants "apparent values", i.e. potential payoffs that can be obtained from matching with the applicant as it appears to the reviewer, and their bias-corrected version.
- - **log** — same as before
-
- and 4 graphs:
- - **available_payoffs** - as before (not affected by the matching procedure)
- ![figure](./figures/biased_available_payoffs.svg) 
- - **obs_vs_dap** - as before (may be different due to the change in the reviewers perception of the applicants)
- ![figure](./figures/biased_obs_vs_dap.svg)
- - **apparent_values** - the payoffs that can be obtained from matching with the applicant as they appear to the reviewers by `'A_bias_char'`
- ![figure](./figures/biased_apparent_values.svg)
- - **bias_effect** - applicants' payoffs obtained in the observed (presumably unbiased) allocation, payoffs obtained in the biased DAP-produced allocation, and the difference between the two — all by `'A_bias_char'`
-![figure](./figures/biased_bias_effect.svg)
 
 ## Codebook
 [Output data](#output-data) | [Log](#log)
