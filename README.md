@@ -50,6 +50,9 @@ output_data, log = dap_mrs.matching(seed=43)
 Without input data provided the function will generate the following simulated dataset:
 
 ```python
+import pandas as pd
+import numpy as np
+
 pd.DataFrame({'A_char_1': np.random.normal(50, 10, 200),
               'A_char_2': np.random.normal(50, 10, 200),
               'A_char_3': np.random.normal(50, 10, 200),
