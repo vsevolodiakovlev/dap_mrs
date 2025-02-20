@@ -6,17 +6,24 @@ by Gale and Shapley (1962). The algorithm computes an applicant-optimal assignme
 the data for the agents' characteristics and the marginal rate of substitution (MRS) between 
 the characteristics of their counterparts.
 
-For more information, see https://github.com/vsevolodiakovlev/dap_mrs/blob/main/README.md.
+The module includes the following functions:
+    - matching 
+        Perform the Deferred Acceptance Procedure (DAP) based on the data for the agents' characteristics 
+        and the marginal rates of substitution (MRS) between the characteristics of their counterparts.
+    - graphs.available_payoffs
+        Plot the observed payoffs vs. the A-Optimal payoffs for the Applicants and Reviewers.
+    - graphs.observed_vs_dap
+        Plot the Reviewers' apparent values for the two groups of agents defined by the bias characteristic.
+    - graphs.apparent_values
+        Plot the Reviewers' apparent values for the two groups of agents defined by the bias characteristic.
+    - graphs.bias_effect
+        Plot the bias' effect on the payoffs of the Applicants for the two groups of agents defined by the bias characteristic.
 
-The module is a work in progress. The two current versions of the algorithm are `two_features`
-and `four_features`. The former is implemented for agents characterised by two variables, while
-the latter is implemented for agents characterised by four variables. To learn more about the
-parameters, run `help(dam_mrs.two_features)` or `help(dam_mrs.four_features)`. 
+For more information, see https://github.com/vsevolodiakovlev/dap_mrs/blob/main/README.md.
 
 author: Vsevolod Iakovlev
 email: vsevolod.v.iakovlev@gmail.com
 """
 
-from .src.main import two_features
-from .src.main import four_features
-from .src.main import rematcher
+from .src.main import matching
+from .src import graphs
