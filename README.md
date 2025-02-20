@@ -1,6 +1,6 @@
 # Deferred Acceptance with Marginal Rate of Substitution
 
-[Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [Functions](#functions) | [Examples](#examples) | [Codebook](#codebook) | [References](#references)
+[Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [Examples](#examples) | [Functions](#functions) | [Codebook](#codebook) | [References](#references)
 
 ![figure](./figures/dap_mrs.png)
 
