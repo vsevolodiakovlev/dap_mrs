@@ -419,7 +419,7 @@ The plotly figure object.
 | `[spec_name]_bidap_[B_char_3_name]` | The third characteristic of B matched with A as the result of the biased DAP | `bias=True` |
 | `[spec_name]_bidap_[B_char_4_name]` | The fourth characteristic of B matched with A as the result of the biased DAP | `bias=True` |
 | `[spec_name]_A_apparent_v`         | the payoff that can be obtained from matching with A as it appears to B | `bias=True` |
-| `[spec_name]_A_bias_corrected_v`   | the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
+| `[spec_name]_A_apparent_corrected_v`   | the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
 | `[spec_name]_A_obs_u_z`            | Z-score of A's payoff in the observed allocation | default |
 | `[spec_name]_B_obs_u_z`            | Z-score of B's payoff in the observed allocation | default |
 | `[spec_name]_A_dap_u_z`            | Z-score of A's payoff in the DAP-derived allocation | default |
@@ -429,7 +429,7 @@ The plotly figure object.
 | `[spec_name]_diff_A_z`             | Z-score of the difference between A's payoffs in the observed and DAP-derived allocations | default |
 | `[spec_name]_diff_B_z`             | Z-score of the difference between B's payoffs in the observed and DAP-derived allocations | default |
 | `[spec_name]_A_apparent_v_z`       | Z-score of the payoff that can be obtained from matching with A as it appears to B | `bias=True` |
-| `[spec_name]_A_bias_corrected_v_z` | Z-score of the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
+| `[spec_name]_A_apparent_corrected_v_z` | Z-score of the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
 
 ### Log
 
