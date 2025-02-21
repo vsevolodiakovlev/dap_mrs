@@ -1,12 +1,34 @@
 # Deferred Acceptance with Marginal Rate of Substitution
 
-[Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [Examples](#examples) | [Functions](#functions) | [Codebook](#codebook) | [References](#references)
+[Functionality](#functionality) | [Algorithm](#the-algorithm) | [Usage](#to-use-the-module) | [Examples](#examples) | [Functions](#functions) | [Codebook](#codebook) | [References](#references)
 
 ![figure](./figures/dap_mrs.png)
 
-This module is a python implementation of the *deferred acceptance procedure (DAP)* developed by Gale and Shapley (1962). The algorithm computes an applicant-optimal assignment based on the data for the agents' characteristics and the *marginal rate of substitution (MRS)* between the characteristics of their counterparts.
+This module is a Python implementation of the *deferred acceptance procedure (DAP)* developed by Gale and Shapley (1962). The algorithm computes an applicant-optimal assignment based on the data for the agents' characteristics and the *marginal rate of substitution (MRS)* between the characteristics of their counterparts.
 
 *Any suggestions regarding either the code or economics are most welcome!*
+
+## Functionality
+
+### A-optimal payoffs
+Computing the payoffs for applicants and reviewers that are obtained in the applicants-optimal (A-optimal) allocation 
+
+See [Default parameters](#default-parameters) in [Examples](#examples)
+
+### A-optimal allocation
+Appending the reviewers' data corresponding to the A-optimal allocation to the input dataset 
+
+See `dap_allocation_vars` in [`dap_mrs.matching()`](#dap_mrsmatching)
+
+### Biased reviewer
+Simulating the matching process with biased reviewers: the agents are matched using the input data and DAP with standard settings except the reviewers have a pre-specified bias against a binary characteristic of the applicants 
+
+See [Biased reviewer](#biased-reviewer) in [Examples](#examples)
+
+### Visualisation
+Plotting the graphs comparing the observed and A-optimal allocations, as well as the payoffs across the bias categories in case of the biased reviewers 
+
+See `dap_mrs.graph` in [Functions](#functions)
 
 ## The algorithm
 
