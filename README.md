@@ -20,8 +20,8 @@ Appending the reviewers' data corresponding to the A-optimal allocation to the i
 
 See `dap_allocation_vars` in [`dap_mrs.matching()`](#dap_mrsmatching)
 
-### Biased reviewer
-Simulating the matching process with biased reviewers: the agents are matched using the input data and DAP with standard settings except the reviewers have a pre-specified bias against a binary characteristic of the applicants 
+### Biased reviewer simulation
+The agents are matched using the input data and DAP with the standard settings except the reviewers have a pre-specified bias against a binary characteristic of the applicants 
 
 See [Biased reviewer](#examples/biased-reviewer) in [Examples](#examples)
 
