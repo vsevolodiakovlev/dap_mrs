@@ -88,7 +88,7 @@ def matching(data_input='example_data',
     dap_allocation_vars : bool, optional
         If True, in addition to the variables containing applicants' and reviewers' initially assigned indices, 
         the indices of their A-Optimal matches, as well as their characteristics. Default is False.
-    graphs : bool, optional
+    plot_graphs : bool, optional
         If True, the output graphs will be plotted. Default is True.
     save_files : bool, optional
         If True, the output files will be saved. Default is True.
@@ -129,7 +129,7 @@ def matching(data_input='example_data',
     ...                                     B_name='Reviewers',
     ...                                     spec_name='default',
     ...                                     dap_allocation_vars=False,
-    ...                                     graphs=True,
+    ...                                     plot_graphs=True,
     ...                                     save_files=True,
     ...                                     seed=None)
 
