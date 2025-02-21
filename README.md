@@ -23,7 +23,7 @@ See `dap_allocation_vars` in [`dap_mrs.matching()`](#dap_mrsmatching)
 ### Biased reviewer simulation
 The agents are matched using the input data and DAP with the standard settings except the reviewers have a pre-specified bias against a binary characteristic of the applicants 
 
-See [Biased reviewer](#examples/biased-reviewer) in [Examples](#examples)
+See [Biased reviewer](#biased-reviewer) in [Examples](#examples)
 
 ### Visualisation
 Plotting the graphs comparing the observed and A-optimal allocations, as well as the payoffs across the bias categories in case of the biased reviewers 
@@ -103,8 +103,11 @@ _**Note:** Specifying `dap_allocation_vars=True` will return the output data wit
 
 and 2 graphs: 
  - **available_payoffs** - available payoffs for applicants and reviewers
+
  ![figure](./figures/default_available_payoffs.svg) 
+
  - **obs_vs_dap** - the difference between the payoffs of the applicants in the observed (original) and the A-Optimal (dap-computed) allocations
+
 ![figure](./figures/default_obs_vs_dap.svg)
 
 ### Biased reviewer
@@ -123,12 +126,19 @@ The function will return 2 data frames:
 
  and 4 graphs:
  - **available_payoffs** - as before (not affected by the matching procedure)
+ 
  ![figure](./figures/biased_available_payoffs.svg) 
+ 
  - **obs_vs_dap** - as before (may be different due to the change in the reviewers perception of the applicants)
+ 
  ![figure](./figures/biased_obs_vs_dap.svg)
+ 
  - **apparent_values** - the payoffs that can be obtained from matching with the applicant as they appear to the reviewers by `'A_bias_char'`
+ 
  ![figure](./figures/biased_apparent_values.svg)
+ 
  - **bias_effect** - applicants' payoffs obtained in the observed (presumably unbiased) allocation, payoffs obtained in the biased DAP-produced allocation, and the difference between the two — all by `'A_bias_char'`
+
 ![figure](./figures/biased_bias_effect.svg)
 
 ## Functions
