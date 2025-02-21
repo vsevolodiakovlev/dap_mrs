@@ -208,7 +208,6 @@ def matching(data_input='example_data',
             'mrs12'         : data_input[A_mrs12_name],
             'mrs13'         : data_input[A_mrs13_name],
             'mrs14'         : data_input[A_mrs14_name],
-            'first_best'    : [None] * len(data_input.index),
             'match'         : [None] * len(data_input.index),
             'match_utility' : [0] * len(data_input.index)}
     A = pd.DataFrame(A)
@@ -222,7 +221,6 @@ def matching(data_input='example_data',
             'mrs13'         : data_input[B_mrs13_name],
             'mrs14'         : data_input[B_mrs14_name],
             'bias_mrs'      : data_input[B_bias_mrs_name],
-            'first_best'    : [None] * len(data_input.index),
             'match'         : [None] * len(data_input.index),
             'match_utility' : [0] * len(data_input.index)}
     B = pd.DataFrame(B)
@@ -386,7 +384,8 @@ def matching(data_input='example_data',
     
     # update the dataset with the matching results
     if dap_allocation_vars == True:
-        B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
+        B_dap_sorted = B.set_index('match', drop=False)
+        B_dap_sorted.sort_index(inplace=True)
         data_output[spec_name + '_initial_index'] = data_input.index
         data_output[spec_name + '_dap_jobid'] = A['match']
         data_output[spec_name + '_dap_' + B_char_1_name] = B_dap_sorted['char_1']
@@ -402,7 +401,8 @@ def matching(data_input='example_data',
 
     # post DAP biased allocation
     if bias == True:
-        B_dap_sorted = B.sort_values('match', ascending=True, ignore_index=True)
+        B_dap_sorted = B.set_index('match', drop=False)
+        B_dap_sorted.sort_index(inplace=True)
         data_output[spec_name + '_initial_index'] = data_input.index
         data_output[spec_name + '_bidap_jobid'] = A['match']
         data_output[spec_name + '_bidap_' + B_char_1_name] = B_dap_sorted['char_1']
