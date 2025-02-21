@@ -23,7 +23,7 @@ See `dap_allocation_vars` in [`dap_mrs.matching()`](#dap_mrsmatching)
 ### Biased reviewer
 Simulating the matching process with biased reviewers: the agents are matched using the input data and DAP with standard settings except the reviewers have a pre-specified bias against a binary characteristic of the applicants 
 
-See [Biased reviewer](#biased-reviewer) in [Examples](#examples)
+See [Biased reviewer](#examples/biased-reviewer) in [Examples](#examples)
 
 ### Visualisation
 Plotting the graphs comparing the observed and A-optimal allocations, as well as the payoffs across the bias categories in case of the biased reviewers 
