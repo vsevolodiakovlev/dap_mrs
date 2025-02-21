@@ -93,7 +93,7 @@ pd.DataFrame({'A_char_1': np.random.normal(50, 10, 200),
               'B_bias_mrs': [-25] * 200})
 ```
 
-_**Note:** Although the bias characteristics are specified, the procedure will ignore them by default._
+_**Note:** Although the bias characteristics are specified, the procedure will ignore them unless `bias` is set to `True`._
 
 The function will return 2 data frames:
  - **output_data** — modified input data file with the matching results added as new columns
