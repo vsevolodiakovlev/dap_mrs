@@ -403,33 +403,33 @@ The plotly figure object.
 
 | **Variable Name**         | **Description**                                                                                     | **Condition**                     |
 |---------------------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
-| `[spec_name]_initial_index`         | The original index of A and B in the input dataset `data_input` | `dap_allocation_vars=True` or `bias=True`  |
-| `[spec_name]_dap_jobid`             | The index of B matched with A as the result of the DAP  | `dap_allocation_vars=True` |
-| `[spec_name]_dap_[B_char_1_name]`   | The first characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
-| `[spec_name]_dap_[B_char_2_name]`   | The second characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
-| `[spec_name]_dap_[B_char_3_name]`   | The third characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
-| `[spec_name]_dap_[B_char_4_name]`   | The fourth characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
-| `[spec_name]_A_obs_u`               | A's payoff in the observed allocation | default |
-| `[spec_name]_B_obs_u`               | B's payoff in the observed allocation | default |
-| `[spec_name]_A_dap_u`               | A's payoff in the DAP-derived allocation | default |
-| `[spec_name]_B_dap_u`               | B's payoff in the DAP-derived allocation | default |
-| `[spec_name]_bidap_jobid`           | The index of B matched with A as the result of the biased DAP  | `bias=True` |
-| `[spec_name]_bidap_[B_char_1_name]` | The first characteristic of B matched with A as the result of the biased DAP | `bias=True` |
-| `[spec_name]_bidap_[B_char_2_name]` | The second characteristic of B matched with A as the result of the biased DAP | `bias=True` |
-| `[spec_name]_bidap_[B_char_3_name]` | The third characteristic of B matched with A as the result of the biased DAP | `bias=True` |
-| `[spec_name]_bidap_[B_char_4_name]` | The fourth characteristic of B matched with A as the result of the biased DAP | `bias=True` |
-| `[spec_name]_A_apparent_v`         | the payoff that can be obtained from matching with A as it appears to B | `bias=True` |
-| `[spec_name]_A_apparent_corrected_v`   | the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
-| `[spec_name]_A_obs_u_z`            | Z-score of A's payoff in the observed allocation | default |
-| `[spec_name]_B_obs_u_z`            | Z-score of B's payoff in the observed allocation | default |
-| `[spec_name]_A_dap_u_z`            | Z-score of A's payoff in the DAP-derived allocation | default |
-| `[spec_name]_B_dap_u_z`            | Z-score of B's payoff in the DAP-derived allocation | default |
-| `[spec_name]_diff_A`               | Difference between A's payoff in the observed allocation and the DAP-derived allocations | default |
-| `[spec_name]_diff_B`               | Difference between B's payoff in the observed allocation and the DAP-derived allocations | default |
-| `[spec_name]_diff_A_z`             | Z-score of the difference between A's payoffs in the observed and DAP-derived allocations | default |
-| `[spec_name]_diff_B_z`             | Z-score of the difference between B's payoffs in the observed and DAP-derived allocations | default |
-| `[spec_name]_A_apparent_v_z`       | Z-score of the payoff that can be obtained from matching with A as it appears to B | `bias=True` |
-| `[spec_name]_A_apparent_corrected_v_z` | Z-score of the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
+| `[spec_name]_init_id`                | The original index of A and B in the input dataset `data_input` | `dap_allocation_vars=True` or `bias=True`  |
+| `[spec_name]_dap_asgn_B_id`          | The index of B matched with A as the result of the DAP  | `dap_allocation_vars=True` |
+| `[spec_name]_dap_[B_char_1_name]`    | The first characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
+| `[spec_name]_dap_[B_char_2_name]`    | The second characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
+| `[spec_name]_dap_[B_char_3_name]`    | The third characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
+| `[spec_name]_dap_[B_char_4_name]`    | The fourth characteristic of B matched with A as the result of the DAP | `dap_allocation_vars=True` |
+| `[spec_name]_A_obs_u`                | A's payoff in the observed allocation | _default_ |
+| `[spec_name]_B_obs_u`                | B's payoff in the observed allocation | _default_ |
+| `[spec_name]_A_dap_u`                | A's payoff in the DAP-derived allocation | _default_ |
+| `[spec_name]_B_dap_u`                | B's payoff in the DAP-derived allocation | _default_ |
+| `[spec_name]_bidap_asgn_B_id`        | The index of B matched with A as the result of the biased DAP  | `bias=True` |
+| `[spec_name]_bidap_[B_char_1_name]`  | The first characteristic of B matched with A as the result of the biased DAP | `bias=True` |
+| `[spec_name]_bidap_[B_char_2_name]`  | The second characteristic of B matched with A as the result of the biased DAP | `bias=True` |
+| `[spec_name]_bidap_[B_char_3_name]`  | The third characteristic of B matched with A as the result of the biased DAP | `bias=True` |
+| `[spec_name]_bidap_[B_char_4_name]`  | The fourth characteristic of B matched with A as the result of the biased DAP | `bias=True` |
+| `[spec_name]_bidap_A_aprnt_v`        | the payoff that can be obtained from matching with A as it appears to B | `bias=True` |
+| `[spec_name]_bidap_A_aprnt_crct_v`   | the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
+| `[spec_name]_A_obs_u_z`              | Z-score of A's payoff in the observed allocation | _default_ |
+| `[spec_name]_B_obs_u_z`              | Z-score of B's payoff in the observed allocation | _default_ |
+| `[spec_name]_A_dap_u_z`              | Z-score of A's payoff in the DAP-derived allocation | _default_ |
+| `[spec_name]_B_dap_u_z`              | Z-score of B's payoff in the DAP-derived allocation | _default_ |
+| `[spec_name]_diff_A`                 | Difference between A's payoff in the observed allocation and the DAP-derived allocations | _default_ |
+| `[spec_name]_diff_B`                 | Difference between B's payoff in the observed allocation and the DAP-derived allocations | _default_ |
+| `[spec_name]_diff_A_z`               | Z-score of the difference between A's payoffs in the observed and DAP-derived allocations | _default_ |
+| `[spec_name]_diff_B_z`               | Z-score of the difference between B's payoffs in the observed and DAP-derived allocations | _default_ |
+| `[spec_name]_bidap_A_aprnt_v_z`      | Z-score of the payoff that can be obtained from matching with A as it appears to B | `bias=True` |
+| `[spec_name]_bidap_A_aprnt_crct_v_z` | Z-score of the payoff that can be obtained from matching with A as it appears to B, corrected for the bias | `bias=True` |
 
 ### Log
 

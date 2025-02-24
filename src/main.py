@@ -386,8 +386,8 @@ def matching(data_input='example_data',
     if dap_allocation_vars == True:
         B_dap_sorted = B.set_index('match', drop=False)
         B_dap_sorted.sort_index(inplace=True)
-        data_output[spec_name + '_initial_index'] = data_input.index
-        data_output[spec_name + '_dap_jobid'] = A['match']
+        data_output[spec_name + '_init_id'] = data_input.index
+        data_output[spec_name + '_dap_asgn_B_id'] = A['match']
         data_output[spec_name + '_dap_' + B_char_1_name] = B_dap_sorted['char_1']
         data_output[spec_name + '_dap_' + B_char_2_name] = B_dap_sorted['char_2']
         data_output[spec_name + '_dap_' + B_char_3_name] = B_dap_sorted['char_3']
@@ -403,14 +403,14 @@ def matching(data_input='example_data',
     if bias == True:
         B_dap_sorted = B.set_index('match', drop=False)
         B_dap_sorted.sort_index(inplace=True)
-        data_output[spec_name + '_initial_index'] = data_input.index
-        data_output[spec_name + '_bidap_jobid'] = A['match']
+        data_output[spec_name + '_init_id'] = data_input.index
+        data_output[spec_name + '_bidap_asgn_B_id'] = A['match']
         data_output[spec_name + '_bidap_' + B_char_1_name] = B_dap_sorted['char_1']
         data_output[spec_name + '_bidap_' + B_char_2_name] = B_dap_sorted['char_2']
         data_output[spec_name + '_bidap_' + B_char_3_name] = B_dap_sorted['char_3']
         data_output[spec_name + '_bidap_' + B_char_4_name] = B_dap_sorted['char_4']
-        data_output[spec_name + '_bidap_A_apparent_v']           = B_dap_sorted['match_utility']
-        data_output[spec_name + '_bidap_A_apparent_corrected_v'] = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
+        data_output[spec_name + '_bidap_A_aprnt_v']        = B_dap_sorted['match_utility']
+        data_output[spec_name + '_bidap_A_aprnt_crct_v']   = B_dap_sorted['match_utility'] - A['bias_char'] * B_dap_sorted['bias_mrs']
 
     # calculate z-scores for observed payoffs
     data_output[spec_name + '_A_obs_u_z'] = (data_output[spec_name + '_A_obs_u'] - data_output[spec_name + '_A_obs_u'].mean())/data_output[spec_name + '_A_obs_u'].std()
@@ -430,8 +430,8 @@ def matching(data_input='example_data',
     
     # calculate z-scores for apparent values
     if bias == True:
-        data_output[spec_name + '_bidap_A_apparent_v_z']           = (data_output[spec_name + '_bidap_A_apparent_v'] - data_output[spec_name + '_bidap_A_apparent_v'].mean())/data_output[spec_name + '_bidap_A_apparent_v'].std()
-        data_output[spec_name + '_bidap_A_apparent_corrected_v_z'] = (data_output[spec_name + '_bidap_A_apparent_corrected_v'] - data_output[spec_name + '_bidap_A_apparent_corrected_v'].mean())/data_output[spec_name + '_bidap_A_apparent_corrected_v'].std()
+        data_output[spec_name + '_bidap_A_aprnt_v_z']           = (data_output[spec_name + '_bidap_A_aprnt_v'] - data_output[spec_name + '_bidap_A_aprnt_v'].mean())/data_output[spec_name + '_bidap_A_aprnt_v'].std()
+        data_output[spec_name + '_bidap_A_aprnt_crct_v_z'] = (data_output[spec_name + '_bidap_A_aprnt_crct_v'] - data_output[spec_name + '_bidap_A_aprnt_crct_v'].mean())/data_output[spec_name + '_bidap_A_aprnt_crct_v'].std()
 
     # drop unnecessary columns
     if A_char_number == 3:
