@@ -49,8 +49,11 @@ An assignment is called **stable** if there are no two pairs of matched agents w
 
 1. Create a new directory with the input data and make it your working directory
 2. Clone the repository to that directory
-3. Make sure the following packages are installed: `pandas`, `matplotlib`, `ridgeplot`, `plotly`, `kaleido`
-4. Import the module:
+3. Make sure the following packages are installed: `pandas`, `ridgeplot`, `plotly`, `kaleido`
+```shell
+pip install panda ridgeplot plotly kaleido
+```   
+5. Import the module:
 ```python
 import dap_mrs
 ```
