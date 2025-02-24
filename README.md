@@ -51,7 +51,7 @@ An assignment is called **stable** if there are no two pairs of matched agents w
 2. Clone the repository to that directory
 3. Make sure the following packages are installed: `pandas`, `ridgeplot`, `plotly`, `kaleido`
 ```shell
-pip install panda ridgeplot plotly kaleido
+pip install pandas ridgeplot plotly kaleido
 ```   
 5. Import the module:
 ```python
