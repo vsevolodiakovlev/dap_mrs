@@ -192,11 +192,11 @@ def apparent_values(data_input,
     """
 
     if units == 'Z-Score':
-        A_apparent_name = spec_name + '_bidap_A_apparent_v_z'
-        A_apparent_corrected_name = spec_name + '_bidap_A_apparent_corrected_v_z'
+        A_apparent_name = spec_name + '_bidap_A_aprnt_v_z'
+        A_apparent_corrected_name = spec_name + '_bidap_A_aprnt_crct_v_z'
     else:
-        A_apparent_name = spec_name + '_bidap_A_apparent_v'
-        A_apparent_corrected_name = spec_name + '_bidap_A_apparent_corrected_v'
+        A_apparent_name = spec_name + '_bidap_A_aprnt_v'
+        A_apparent_corrected_name = spec_name + '_bidap_A_aprnt_crct_v'
 
     fig = ridgeplot(samples=[data_input[A_apparent_name][data_input[A_bias_char_name] == 0],
                              data_input[A_apparent_name][data_input[A_bias_char_name] == 1],
